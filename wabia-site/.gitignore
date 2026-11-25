@@ -1,0 +1,5 @@
+# Email credentials live in server environment variables only
+.env
+.env.*
+!.env.example
+.vercel
