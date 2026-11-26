@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Magnet from '../bits/Magnet.jsx';
-import { finePointer, gsap, reduceMotion, SplitText, useGSAP } from '../motion.js';
+import { finePointer, gsap, reduceMotion, riseTitle, useGSAP } from '../motion.js';
 import { BUSINESS_TYPES, FIELDS, validateQuote } from '../quote.js';
 import { Alert, Arrow, Check } from './icons.jsx';
 
@@ -49,16 +49,9 @@ export default function Quote() {
   }, [status]);
 
   useGSAP(
-    () => {
+    (context, contextSafe) => {
       if (reduceMotion) return;
-      const title = SplitText.create('.quote__title', { type: 'words,chars', mask: 'chars' });
-      gsap.from(title.chars, {
-        yPercent: 118,
-        stagger: 0.016,
-        duration: 1,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: '.quote__title', start: 'top 82%', once: true }
-      });
+      riseTitle('.quote__title', 'top 82%', 0.016, contextSafe);
       // The work order slides up and settles at a slight angle, like a sheet dropped on a desk.
       gsap.from('.order', {
         y: 120,

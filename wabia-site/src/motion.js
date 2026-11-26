@@ -13,3 +13,22 @@ export const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)
 if (!reduceMotion) document.documentElement.classList.add('motion');
 
 export { gsap, ScrollTrigger, SplitText, useGSAP };
+
+// A section title whose letters rise out of masks as it scrolls in. The split waits until the title is half a screen
+// away: splitting re-lays out the page, so loading doesn't pay for titles far below. Call inside useGSAP.
+export const riseTitle = (selector, start, stagger, contextSafe) =>
+  ScrollTrigger.create({
+    trigger: selector,
+    start: 'top 150%',
+    once: true,
+    onEnter: contextSafe(() => {
+      const { chars } = SplitText.create(selector, { type: 'words,chars', mask: 'chars' });
+      gsap.from(chars, {
+        yPercent: 118,
+        stagger,
+        duration: 1,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: selector, start, once: true }
+      });
+    })
+  });

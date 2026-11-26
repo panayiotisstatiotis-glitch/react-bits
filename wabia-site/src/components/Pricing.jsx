@@ -1,7 +1,7 @@
 import { useLenis } from 'lenis/react';
 import { useEffect, useRef } from 'react';
 import SpotlightCard from '../bits/SpotlightCard.jsx';
-import { finePointer, gsap, reduceMotion, SplitText, useGSAP } from '../motion.js';
+import { finePointer, gsap, reduceMotion, riseTitle, useGSAP } from '../motion.js';
 import { Arrow, Check } from './icons.jsx';
 import Odometer from './Odometer.jsx';
 
@@ -74,16 +74,9 @@ export default function Pricing() {
   }, []);
 
   useGSAP(
-    () => {
+    (context, contextSafe) => {
       if (reduceMotion) return;
-      const title = SplitText.create('.pricing__title', { type: 'words,chars', mask: 'chars' });
-      gsap.from(title.chars, {
-        yPercent: 118,
-        stagger: 0.016,
-        duration: 1,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: '.pricing__title', start: 'top 82%', once: true }
-      });
+      riseTitle('.pricing__title', 'top 82%', 0.016, contextSafe);
 
       // The giant outlined FIXED PRICE band drifts behind the tickets, faster the faster you scroll.
       gsap.to('.pricing__band span', {
@@ -106,7 +99,7 @@ export default function Pricing() {
             .to(
               tickets[i].querySelectorAll('.odo__reel'),
               {
-                yPercent: (n, el) => -(10 + +el.dataset.d) * 5,
+                yPercent: (n, el) => -el.dataset.d * 10,
                 duration: 0.35 * k,
                 stagger: 0.05 * k,
                 ease: 'power2.out'

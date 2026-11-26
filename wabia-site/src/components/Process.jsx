@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { gsap, reduceMotion, ScrollTrigger, SplitText, useGSAP } from '../motion.js';
+import { gsap, reduceMotion, riseTitle, ScrollTrigger, useGSAP } from '../motion.js';
 import { Van } from './icons.jsx';
 
 const STEPS = [
@@ -29,7 +29,7 @@ export default function Process() {
   const rootRef = useRef(null);
 
   useGSAP(
-    () => {
+    (context, contextSafe) => {
       if (reduceMotion) return;
       // The blueprint sheet zooms up to full size as it arrives.
       gsap.fromTo(
@@ -42,14 +42,7 @@ export default function Process() {
           scrollTrigger: { trigger: rootRef.current, start: 'top bottom', end: 'top 15%', scrub: true }
         }
       );
-      const title = SplitText.create('.process__title', { type: 'words,chars', mask: 'chars' });
-      gsap.from(title.chars, {
-        yPercent: 118,
-        stagger: 0.018,
-        duration: 1,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: '.process__title', start: 'top 80%', once: true }
-      });
+      riseTitle('.process__title', 'top 80%', 0.018, contextSafe);
 
       // Wide: the stage holds while the van drives the job along the tape, step by step. Narrow: the tape runs down
       // the page and the van rides it. Start states (cards lying flat, stamps and LIVE hidden) live in CSS.
