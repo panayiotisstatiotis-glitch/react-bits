@@ -132,7 +132,7 @@ export default function Pricing() {
               { scale: 1, duration: 0.15 * k, stagger: 0.04 * k, ease: 'back.out(3)' },
               at
             );
-        let doneAt; // scroll position where a ticket is fully printed, for keyboard focus
+        let doneAt; // scroll position where the focused ticket is printed and the focused control shows, for keyboard
 
         if (conditions.hold) {
           const headerH = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'));
@@ -184,13 +184,19 @@ export default function Pricing() {
                 .fromTo(tape, { scaleX: 0 }, { scaleX: 1, duration: 0.5 }, 0.3)
                 .fromTo(sweep, { xPercent: 0 }, { xPercent: 200, duration: 0.9 }, 0.5);
           });
-          doneAt = slot => slot.getBoundingClientRect().top + scrollY - innerHeight * 0.55;
+          // The ticket may still be sliding in, so place the control by its offset inside the ticket, from the
+          // ticket's resting slot: far enough down that the print is done, and the control fully on screen.
+          doneAt = (slot, el) => {
+            const top = slot.getBoundingClientRect().top + scrollY;
+            const bottom = top + el.getBoundingClientRect().bottom - slot.firstElementChild.getBoundingClientRect().top;
+            return Math.max(top - innerHeight * 0.55, bottom - innerHeight + 24);
+          };
         }
 
         // Tabbing into a ticket finishes its print first, so the focused button is never clipped away.
         const row = gsap.utils.toArray('.tickets')[0];
         const onFocus = e => {
-          const y = doneAt(e.target.closest('.ticket-slot'));
+          const y = doneAt(e.target.closest('.ticket-slot'), e.target);
           if (scrollY >= y - 1) return;
           if (lenisRef.current) lenisRef.current.scrollTo(y, { immediate: true, force: true });
           else window.scrollTo(0, y);

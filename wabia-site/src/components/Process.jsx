@@ -86,7 +86,12 @@ export default function Process() {
               tl.to(stamps[i], { autoAlpha: 1, scale: 1, rotation: -12, duration: 0.12, ease: 'back.out(2)' }, i + 0.3)
                 .to(cards[i], { x: 3, duration: 0.025, yoyo: true, repeat: 3 }, i + 0.36)
                 .to(strip, { x: () => -step() * (i + 1), duration: 0.55, ease: 'power1.inOut' }, i + 0.45)
-                .to('.van__wheel', { rotation: 540 * (i + 1), duration: 0.55, ease: 'power1.inOut' }, i + 0.45)
+                .to(
+                  '.van__wheel',
+                  // SVG groups turn about their top-left by default; spin each wheel about its own hub.
+                  { rotation: 540 * (i + 1), transformOrigin: '50% 50%', duration: 0.55, ease: 'power1.inOut' },
+                  i + 0.45
+                )
                 .to('.van', { y: -3, duration: 0.07, yoyo: true, repeat: 7 }, i + 0.45);
             });
             addLaunch(tl, last + 0.05, 0.3).to({}, { duration: 0.4 });
