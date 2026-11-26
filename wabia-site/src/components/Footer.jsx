@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="wrap footer__cta" data-reveal>
         <p className="footer__big">Ready when you are.</p>
         <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
-          <a className="btn btn--lime btn--lg" href="#quote">
+          <a className="btn btn--lime btn--lg" href="#quote" data-cursor-label="Quote">
             Request a quote <Arrow className="btn__arrow" />
           </a>
         </Magnet>

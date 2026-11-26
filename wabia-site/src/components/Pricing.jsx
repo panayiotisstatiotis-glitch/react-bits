@@ -166,7 +166,7 @@ export default function Pricing() {
                 ))}
               </ul>
               <p className="ticket__time mono">{time}</p>
-              <a className="btn btn--ink btn--block" href="#quote">
+              <a className="btn btn--ink btn--block" href="#quote" data-cursor-label="Pick">
                 Request a quote <Arrow className="btn__arrow" />
               </a>
               <span className="ticket__barcode" aria-hidden="true" />

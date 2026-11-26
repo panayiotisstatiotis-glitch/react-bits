@@ -81,14 +81,14 @@ export default function Header() {
           <ul id="nav-links" className="nav__links" data-open={open || undefined} onClick={() => setOpen(false)}>
             {LINKS.map(([id, label]) => (
               <li key={id}>
-                <a href={`#${id}`} aria-current={current === id ? 'location' : undefined}>
+                <a href={`#${id}`} aria-current={current === id ? 'location' : undefined} data-cursor-label="Go">
                   {label}
                 </a>
               </li>
             ))}
           </ul>
           <Magnet disabled={!finePointer || reduceMotion} padding={40} magnetStrength={3}>
-            <a className="btn btn--lime nav__cta" href="#quote">
+            <a className="btn btn--lime nav__cta" href="#quote" data-cursor-label="Quote">
               Request a quote
             </a>
           </Magnet>

@@ -214,7 +214,12 @@ export default function Quote() {
 
               <div className="form-actions">
                 <Magnet disabled={!finePointer || reduceMotion} padding={50} magnetStrength={3}>
-                  <button type="submit" className="btn btn--lime btn--lg" aria-disabled={status === 'sending'}>
+                  <button
+                    type="submit"
+                    className="btn btn--lime btn--lg"
+                    aria-disabled={status === 'sending'}
+                    data-cursor-label="Send"
+                  >
                     {status === 'sending' ? 'Sending…' : 'Send request'}
                     {status !== 'sending' && <Arrow className="btn__arrow" />}
                   </button>

@@ -2537,3 +2537,21 @@ textarea {
     font-stretch: 125%;
   }
 }
+
+/* Target reticle cursor (src/bits/TargetCursor): hi-vis lime with an ink edge, so it reads on ink, white and lime. */
+.target-cursor__corner {
+  filter: drop-shadow(0 0 1.2px var(--ink));
+}
+
+.target-cursor__dot {
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+.target-cursor__label {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

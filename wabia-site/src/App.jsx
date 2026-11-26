@@ -2,7 +2,7 @@ import { ReactLenis, useLenis } from 'lenis/react';
 import { useEffect, useRef } from 'react';
 import { finePointer, gsap, reduceMotion, ScrollTrigger, useGSAP } from './motion.js';
 import ClickSpark from './bits/ClickSpark.jsx';
-import Crosshair from './bits/Crosshair.jsx';
+import TargetCursor from './bits/TargetCursor.jsx';
 import Header from './components/Header.jsx';
 import Ruler from './components/Ruler.jsx';
 import Hero from './components/Hero.jsx';
@@ -65,7 +65,18 @@ function Page() {
 
   return (
     <ClickSpark sparkColor="#b8f23d" sparkCount={10} sparkRadius={34} sparkSize={12} duration={520}>
-      {finePointer && !reduceMotion && <Crosshair color="#b8f23d" opacity={0.55} thickness={1} smoothing={0.28} />}
+      {finePointer && !reduceMotion && (
+        <TargetCursor
+          targetSelector="a, button, .ticket, [data-cursor-label]"
+          cursorColor="#b8f23d"
+          blendMode="normal"
+          size={30}
+          cornerSize={11}
+          thickness={2.5}
+          padding={7}
+          spinDuration={3}
+        />
+      )}
       <a className="skip-link" href="#main">
         Skip to content
       </a>

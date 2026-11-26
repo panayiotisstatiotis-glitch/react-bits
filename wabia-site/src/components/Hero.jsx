@@ -242,7 +242,7 @@ export default function Hero() {
               <div className="hero__lower">
                 <div className="hero__ctas">
                   <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
-                    <a className="btn btn--lime btn--lg" href="#quote">
+                    <a className="btn btn--lime btn--lg" href="#quote" data-cursor-label="Quote">
                       Request a quote <Arrow className="btn__arrow" />
                     </a>
                   </Magnet>
