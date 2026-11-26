@@ -3146,6 +3146,8 @@ textarea {
 .footer__mark {
   height: clamp(110px, 22vw, 340px);
   margin-block: clamp(32px, 5vw, 72px);
+  /* The letters change width every frame; with a fixed box, that relayout stays inside it instead of the whole page. */
+  contain: size layout;
   padding-left: max(var(--gutter), env(safe-area-inset-left));
   padding-right: max(var(--gutter), env(safe-area-inset-right));
   color: var(--hivis);

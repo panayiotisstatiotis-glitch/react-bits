@@ -81,7 +81,7 @@ const TargetCursor = ({
     const style = document.createElement('style');
     document.head.appendChild(style);
 
-    const pointer = { x: 0, y: 0, inside: false, seen: false, pressed: false };
+    const pointer = { x: 0, y: 0, inPage: false, inside: false, seen: false, pressed: false };
     const centerX = { x: 0, v: 0 };
     const centerY = { x: 0, v: 0 };
     const halfW = { x: 0, v: 0 };
@@ -112,8 +112,12 @@ const TargetCursor = ({
         lastScope = scope;
       }
       const selector = scope ? '[data-target-cursor-scope]' : 'html';
+      // Wabia: text fields keep their native cursor through a fixed exception, so moving over them never rewrites
+      // this rule (each rewrite restyles every element on the page, which made the form lag).
       const rule =
-        s.hideDefaultCursor && pointer.inside ? `${selector}, ${selector} * { cursor: none !important; }` : '';
+        s.hideDefaultCursor && pointer.inPage
+          ? `${selector}, ${selector} * { cursor: none !important; } ${selector} :is(${TYPING}) { cursor: auto !important; }`
+          : '';
       if (style.textContent !== rule) style.textContent = rule;
     };
 
@@ -291,12 +295,13 @@ const TargetCursor = ({
       pointer.x = event.clientX;
       pointer.y = event.clientY;
       // Wabia: over text fields the reticle fades out and the native text cursor stays.
-      const inside = insideScope(pointer.x, pointer.y, event.target) && !event.target.closest?.(TYPING);
-      if (inside !== pointer.inside) {
-        pointer.inside = inside;
+      const inPage = insideScope(pointer.x, pointer.y, event.target);
+      pointer.inside = inPage && !event.target.closest?.(TYPING);
+      if (inPage !== pointer.inPage) {
+        pointer.inPage = inPage;
         hideCursor();
       }
-      lockOn(inside ? findTarget(pointer.x, pointer.y, event.target) : null);
+      lockOn(pointer.inside ? findTarget(pointer.x, pointer.y, event.target) : null);
       wake();
     };
 
@@ -312,6 +317,7 @@ const TargetCursor = ({
     };
 
     const onLeave = () => {
+      pointer.inPage = false;
       pointer.inside = false;
       pointer.pressed = false;
       lockOn(null);
