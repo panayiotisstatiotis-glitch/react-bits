@@ -1916,6 +1916,334 @@ textarea {
   }
 }
 
+/* Process scene. The sheet and padding live on the stage so they cover it whether or not it holds. */
+.process.section {
+  overflow-x: clip; /* stamps start big and sparks fly; clip (not hidden) so the sticky stage still holds */
+  padding-block: 0;
+}
+
+.process__stage {
+  position: relative;
+  padding-block: var(--section-pad);
+}
+
+.pboard__strip {
+  position: relative;
+}
+
+.pboard__van,
+.pboard__fill,
+.tl__stamp,
+.tl__spark {
+  display: none;
+}
+
+.tl__card {
+  position: relative;
+  z-index: 1;
+}
+
+.tl__num {
+  position: absolute;
+  z-index: 0;
+  top: -0.42em;
+  right: -0.04em;
+  color: transparent;
+  font: 900 clamp(96px, 11vw, 190px) / 1 var(--display);
+  font-stretch: 112%;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  user-select: none;
+  -webkit-text-stroke: 1.5px rgb(10 11 15 / 0.2);
+}
+
+.tl__live {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 68px;
+}
+
+.tl__live-phone {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--ink);
+}
+
+.tl__live-pill {
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: var(--hivis);
+  color: var(--ink);
+  font: 700 8px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tl__spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--a));
+}
+
+.tl__spark i {
+  position: absolute;
+  top: -1.5px;
+  left: 30px;
+  width: 18px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--hivis);
+  box-shadow: 0 0 0 1px var(--ink);
+  transform-origin: 0 50%;
+}
+
+.van {
+  display: block;
+  width: 72px;
+  height: 40px;
+  overflow: visible;
+}
+
+.van__body {
+  fill: var(--hivis);
+  stroke: var(--ink);
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.van__glass,
+.van__tyre {
+  fill: var(--ink);
+}
+
+.van__stripe,
+.van__ladder {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.van__hub {
+  fill: var(--paper);
+}
+
+.van__spoke {
+  stroke: var(--paper);
+  stroke-width: 1.4;
+}
+
+.pboard__day {
+  height: 1.5em;
+  margin: 0;
+  overflow: hidden;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--hivis);
+  font: 600 10px/1.5 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pboard__days,
+.pboard__days > span {
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Motion start states: cards lie back on the tape, stamps and LIVE wait off. Timelines only tween *to* these. */
+.motion .tl__step {
+  perspective: 1000px;
+}
+
+.motion .tl__card {
+  opacity: 0.35;
+  transform: rotateX(70deg);
+  transform-origin: 50% 100%;
+}
+
+.motion .tl__stamp {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  display: block;
+  padding: 6px 10px;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  background: var(--hivis);
+  color: var(--ink);
+  font: 800 12px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(2.2) rotate(-30deg);
+}
+
+.motion .tl__live {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+}
+
+.motion .tl__live-pill {
+  transform: scale(0);
+}
+
+.motion .tl__spark {
+  display: block;
+}
+
+.motion .tl__spark i {
+  transform: scaleX(0);
+}
+
+/* Phones: the van rides down the vertical tape, nose first. */
+@media (max-width: 999px) {
+  .motion .pboard__van {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 1px;
+    display: block;
+    width: 40px;
+    height: 72px;
+  }
+
+  .motion .pboard__van .van {
+    position: absolute;
+    top: 16px;
+    left: -16px;
+    transform: rotate(90deg);
+  }
+
+  .pboard__day {
+    display: none;
+  }
+}
+
+/* Wide: the stage holds while the strip of steps travels under the van. */
+@media (min-width: 1000px) {
+  .motion .process__track {
+    height: 400svh;
+  }
+
+  .motion .process__stage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
+    overflow: hidden;
+    padding-block: calc(var(--header-h) + clamp(16px, 4svh, 40px)) 0;
+  }
+
+  .motion .process__inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .motion .process__head {
+    max-width: none;
+    margin-bottom: clamp(8px, 2svh, 24px);
+  }
+
+  .motion .process .eyebrow {
+    margin-bottom: 14px;
+  }
+
+  .motion .process__title {
+    margin-bottom: 12px;
+    font-size: clamp(36px, min(4.6vw, 8.5svh), 88px);
+  }
+
+  .motion .pboard {
+    --card: min(440px, 30vw);
+    --gap: 64px;
+    --van: 60px;
+    margin-block: auto; /* centre the board in the room the heading leaves */
+  }
+
+  .motion .pboard__van {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    width: 120px;
+    height: var(--van);
+    margin-left: -60px;
+  }
+
+  .motion .pboard__fill {
+    position: absolute;
+    z-index: 2;
+    top: var(--van);
+    right: 50%;
+    left: -50vw;
+    display: block;
+    height: 34px;
+    background: var(--hivis);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .motion .pboard__strip {
+    width: max-content;
+    padding: var(--van) calc(50% - var(--card) / 2) 0;
+    will-change: transform;
+  }
+
+  .motion .pboard .tl__tape {
+    top: var(--van);
+    background:
+      linear-gradient(90deg, var(--ink) 1px, transparent 1px) 0 0 / 10px 10px repeat-x,
+      linear-gradient(90deg, var(--ink) 1px, transparent 1px) 0 0 / 50px 18px repeat-x,
+      rgb(10 11 15 / 0.06);
+  }
+
+  .motion .pboard .tl__fill {
+    display: none;
+  }
+
+  .motion .tl__steps {
+    display: flex;
+    gap: var(--gap);
+    padding: 76px 0 0;
+  }
+
+  .motion .tl__step {
+    flex: none;
+    width: var(--card);
+  }
+
+  .motion .tl__step:first-child .tl__card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion .tl__text {
+    font-size: 15px;
+  }
+}
+
 /* Pricing: job tickets */
 .pricing {
   padding-bottom: 0;

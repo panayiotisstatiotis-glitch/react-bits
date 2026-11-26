@@ -63,3 +63,23 @@ export const HouseDrawing = props => (
     <path d="M8 104h30M8 102v4M38 102v4M23 102v4" opacity=".7" />
   </svg>
 );
+
+// A small site van for the Process scene. Classes carry the colours so the palette tokens apply.
+export const Van = props => (
+  <svg viewBox="0 0 72 40" aria-hidden="true" {...props}>
+    <path
+      className="van__body"
+      d="M4 9a3 3 0 0 1 3-3h39c1.6 0 3 .8 3.9 2.1L57 18l8.3 3.1A4 4 0 0 1 68 24.8V30a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"
+    />
+    <path className="van__glass" d="M47.6 10.5h-6.4V19h12.2Z" />
+    <path className="van__stripe" d="M8 22h32" />
+    <path className="van__ladder" d="M10 3.5h26M14 3.5V6M22 3.5V6M30 3.5V6" />
+    {[19, 53].map(cx => (
+      <g key={cx} className="van__wheel">
+        <circle cx={cx} cy="32" r="6.2" className="van__tyre" />
+        <circle cx={cx} cy="32" r="2.6" className="van__hub" />
+        <path d={`M${cx} 27.4v9.2M${cx - 4.6} 32h9.2`} className="van__spoke" />
+      </g>
+    ))}
+  </svg>
+);
