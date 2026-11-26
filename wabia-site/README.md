@@ -1,6 +1,9 @@
 # Wabia site
 
-One-page site for Wabia, built with React, Vite and [Lenis](https://lenis.dev) smooth scrolling.
+One-page site for Wabia, built with React, Vite, [Lenis](https://lenis.dev) smooth scrolling and GSAP
+(ScrollTrigger, SplitText), driven from one frame clock. `src/bits/` holds React Bits components from this repo
+(Crosshair, Magnet, ClickSpark, TextPressure, SpotlightCard). With "reduce motion" switched on, Lenis and every
+scroll effect are off and the page is a plain document.
 
 ```bash
 npm install

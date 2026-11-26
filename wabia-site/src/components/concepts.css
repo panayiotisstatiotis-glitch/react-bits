@@ -1,8 +1,8 @@
-/* Mock sites inside the phone frames. Everything is in em, and .phone__page sets the size from the screen
-   width (cqw), so each mock scales with its phone. */
+/* Mock sites inside the phone frames. Everything is in em; .phone__page sets the size from the screen width (cqw),
+   so each mock scales with its phone. */
 .mock {
   min-height: 100%;
-  padding: 3.8em 1.3em 2.4em;
+  padding: 4.2em 1.3em 6.5em;
   line-height: 1.35;
 }
 
@@ -15,35 +15,33 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2.2em;
+  margin-bottom: 1.6em;
 }
 
 .m-logo {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
-  font-size: 1.2em;
-  font-weight: 800;
+  font-size: 1.25em;
+  font-weight: 900;
+  font-stretch: 120%;
   letter-spacing: -0.03em;
 }
 
 .mock .m-logo svg {
-  width: 1.15em;
-  height: 1.15em;
+  width: 1.1em;
+  height: 1.1em;
 }
 
-.m-pill {
-  padding: 0.5em 0.95em;
-  border-radius: 99em;
-  font-size: 0.82em;
-  font-weight: 700;
+.m-burger {
+  width: 1.4em;
+  height: 0.6em;
+  border-block: 2px solid currentColor;
 }
 
 .m-kicker {
-  margin-bottom: 0.9em;
-  font-size: 0.75em;
-  font-weight: 600;
-  font-stretch: 125%;
+  margin-bottom: 0.8em;
+  font: 600 0.68em var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.65;
@@ -51,116 +49,57 @@
 
 .m-h1 {
   margin-bottom: 0.4em;
-  font-size: 2.7em;
-  font-weight: 800;
+  font-size: 2.6em;
+  font-weight: 900;
   line-height: 0.95;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
 }
 
 .m-p {
-  margin-bottom: 1.4em;
+  margin-bottom: 1.3em;
   font-size: 0.98em;
   opacity: 0.72;
 }
 
-.m-row {
-  display: flex;
-  gap: 0.5em;
-  margin-bottom: 1.6em;
-}
-
-.m-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4em;
-  padding: 0.95em 1.25em;
-  border-radius: 99em;
-  font-size: 0.88em;
-  font-weight: 700;
-}
-
-.m-lime {
-  background: var(--lime);
-  color: var(--ink);
-}
-
-.m-dark {
-  background: var(--ink);
-  color: var(--white);
-}
-
-.m-line {
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3);
-}
-
 .m-label {
-  margin: 2.2em 0 0.8em;
-  font-size: 0.7em;
-  font-weight: 700;
-  font-stretch: 125%;
+  margin: 2em 0 0.8em;
+  font: 700 0.62em var(--mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.55;
 }
 
-.m-cta {
-  display: flex;
+.m-btn {
+  display: inline-flex;
+  flex: 1;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 2.2em;
-  padding: 1.2em 1.3em;
-  border-radius: 1.1em;
-  font-size: 1.05em;
-  font-weight: 800;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.95em 1em;
+  border-radius: 99em;
+  font-size: 0.92em;
+  font-weight: 700;
+  font-stretch: 110%;
 }
 
-/* Concept 01: Drosia Air-Con — dark, condensed, call-first */
-.mock--drosia {
-  background: #0e1015;
-  color: var(--white);
+.m-lime {
+  background: var(--hivis);
+  color: var(--ink);
 }
 
-.mock--drosia .m-logo svg {
-  color: var(--lime);
+.m-dark {
+  background: var(--ink);
+  color: var(--paper);
 }
 
-.mock--drosia .m-h1 {
-  font-size: 3.5em;
-  font-stretch: 62%;
-  line-height: 0.88;
-  letter-spacing: -0.005em;
-  text-transform: uppercase;
+.mock .m-dark svg,
+.phone__bar .m-dark svg {
+  color: var(--hivis);
 }
 
-.m-card {
-  display: grid;
-  gap: 0.25em;
-  padding: 1em 1.1em;
-  border-radius: 1em;
-  box-shadow: inset 0 0 0 1px var(--lime);
-}
-
-.m-card strong {
-  color: var(--lime);
-}
-
-.m-card span {
-  font-size: 0.88em;
-  opacity: 0.7;
-}
-
-.m-list {
-  display: grid;
-}
-
-.m-list span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.9em 0;
-  border-top: 1px solid rgb(255 255 255 / 0.12);
-  font-weight: 600;
+.m-line {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  color: var(--paper);
 }
 
 .m-chips {
@@ -172,198 +111,521 @@
 .m-chips span {
   padding: 0.45em 0.8em;
   border-radius: 99em;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
-  font-size: 0.8em;
-}
-
-/* Concept 02: Petrino Builders — white, wide type, editorial */
-.mock--petrino {
-  background: var(--white);
-  color: var(--ink);
-}
-
-.m-wordmark {
-  font-size: 1.05em;
-  font-weight: 800;
-  font-stretch: 125%;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.m-burger {
-  width: 1.5em;
-  height: 0.7em;
-  border-block: 2px solid currentColor;
-}
-
-.mock--petrino .m-h1 {
-  font-size: 2.3em;
-  font-stretch: 125%;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.m-photo {
-  display: grid;
-  gap: 0.6em;
-  margin: 1.2em 0;
-  padding: 1.2em 1em 0.9em;
-  border-radius: 0.9em;
-  background: #eef0f2;
-}
-
-.mock .m-photo svg {
-  width: 100%;
-  height: auto;
-}
-
-.m-photo span {
-  font-size: 0.72em;
-  opacity: 0.6;
-}
-
-.mock--petrino .m-btn svg {
-  color: var(--lime);
-}
-
-.m-projects {
-  display: grid;
-}
-
-.m-projects span {
-  display: flex;
-  gap: 0.9em;
-  padding: 0.85em 0;
-  border-top: 1px solid var(--ink-line);
-  font-size: 0.95em;
-  font-weight: 600;
-}
-
-.m-projects b {
-  font-stretch: 62%;
-  font-weight: 800;
-  opacity: 0.45;
-}
-
-.m-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.45em;
-  margin-top: 1.2em;
-}
-
-.m-grid span {
-  aspect-ratio: 1;
-  border-radius: 0.6em;
-  background: #eef0f2;
-}
-
-.m-grid span:nth-child(1) {
-  background: var(--ink);
-}
-
-.m-grid span:nth-child(2) {
-  background: repeating-linear-gradient(135deg, rgb(10 11 15 / 0.8) 0 1.5px, transparent 1.5px 7px), var(--white);
-  box-shadow: inset 0 0 0 1px var(--ink-line);
-}
-
-.m-grid span:nth-child(4) {
-  background: var(--lime);
-}
-
-.m-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4em;
-}
-
-.m-steps span {
-  padding: 0.5em 0.85em;
-  border-radius: 99em;
-  background: #eef0f2;
-  font-size: 0.82em;
-  font-weight: 600;
-}
-
-/* Concept 03: Kyma Pool Care — white with a lime band, friendly */
-.mock--kyma {
-  background: var(--white);
-  color: var(--ink);
-}
-
-.m-banner {
-  margin: -3.8em -1.3em 1.6em;
-  padding: 3.5em 1.3em 0.9em;
-  background: var(--lime);
-  font-weight: 700;
-  text-align: center;
-}
-
-.m-lang {
-  padding: 0.4em 0.7em;
-  border-radius: 99em;
-  box-shadow: inset 0 0 0 1px rgb(10 11 15 / 0.2);
-  font-size: 0.8em;
-  font-weight: 700;
-}
-
-.mock--kyma .m-h1 {
-  font-size: 2.6em;
-}
-
-.m-waves {
-  margin: 1.6em 0 0.4em;
-  padding: 1em 1.1em;
-  border-radius: 1em;
-  background: var(--ink);
-  color: var(--lime);
-}
-
-.mock .m-waves svg {
-  width: 100%;
-  height: auto;
-}
-
-.m-plans {
-  display: grid;
-  gap: 0.45em;
-}
-
-.m-plans span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8em;
-  padding: 0.9em 1em;
-  border-radius: 0.9em;
-  background: #f1f2f4;
-  font-size: 0.88em;
-}
-
-.m-plans strong {
-  font-size: 1.1em;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-size: 0.78em;
+  opacity: 0.8;
 }
 
 .m-checks {
   display: grid;
-  gap: 0.6em;
+  gap: 0.65em;
   margin-top: 1.4em;
 }
 
 .m-checks span {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.55em;
   font-size: 0.92em;
   font-weight: 600;
 }
 
 .mock .m-checks svg {
-  width: 1.4em;
-  height: 1.4em;
-  padding: 0.15em;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.2em;
   border-radius: 50%;
-  background: var(--lime);
+  background: var(--hivis);
   color: var(--ink);
+}
+
+/* Concept 01 · Drosia Air-Con — night-blue black, a live temperature dial, call-first */
+.mock--drosia {
+  background: #0e1015;
+  color: var(--paper);
+}
+
+.mock--drosia .m-logo svg {
+  color: var(--hivis);
+}
+
+.d-dial {
+  position: relative;
+  width: 72%;
+  margin: 0.4em auto 1.6em;
+  aspect-ratio: 1;
+}
+
+.d-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.mock .d-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.d-track,
+.d-arc {
+  fill: none;
+  stroke-width: 9;
+}
+
+.d-track {
+  stroke: rgb(255 255 255 / 0.08);
+}
+
+.d-arc {
+  stroke: var(--hivis);
+  stroke-dasharray: 64 100;
+  stroke-linecap: round;
+  transform: rotate(130deg);
+  transform-origin: 100px 100px;
+}
+
+.d-ticks line {
+  stroke: rgb(255 255 255 / 0.35);
+  stroke-width: 1.4;
+}
+
+.mock .d-ticks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .d-ticks {
+    animation: spin 40s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.d-temp {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.d-temp b {
+  font-size: 3.6em;
+  font-weight: 200;
+  font-stretch: 140%;
+  line-height: 1;
+}
+
+.d-temp span {
+  font: 600 0.6em var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.mock--drosia .m-h1 {
+  font-size: 3.2em;
+  font-stretch: 62%;
+  line-height: 0.86;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.d-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.6em 0.9em;
+  border-radius: 99em;
+  background: rgb(184 242 61 / 0.12);
+  color: var(--hivis);
+  font-size: 0.86em;
+  font-weight: 600;
+}
+
+.d-slot i {
+  position: relative;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: var(--hivis);
+}
+
+.d-slot i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--hivis);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .d-slot i::after {
+    animation: ping 1.6s var(--ease-out) infinite;
+  }
+}
+
+@keyframes ping {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
+.d-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+}
+
+.d-grid span {
+  display: grid;
+  gap: 0.35em;
+  padding: 0.9em;
+  border-radius: 1em;
+  background: rgb(255 255 255 / 0.05);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  font-weight: 700;
+}
+
+.mock .d-grid svg {
+  width: 1.5em;
+  height: 1.5em;
+  color: var(--hivis);
+}
+
+.d-grid small {
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.d-why {
+  display: grid;
+  gap: 0.6em;
+  margin-top: 2em;
+  padding: 1em;
+  border-radius: 1em;
+  box-shadow: inset 0 0 0 1px var(--hivis);
+}
+
+.d-why span {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.9em;
+}
+
+.mock .d-why svg {
+  color: var(--hivis);
+}
+
+/* Concept 02 · Petrino Builders — white paper, wide type, an architect's drawing */
+.mock--petrino {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.p-word {
+  font-size: 1.05em;
+  font-weight: 900;
+  font-stretch: 150%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.p-h1 {
+  margin-bottom: 0.8em;
+  font-size: 3em;
+  font-weight: 900;
+  font-stretch: 150%;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.p-drawing {
+  margin-bottom: 1.2em;
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
+  border-radius: 0.6em;
+  background:
+    linear-gradient(rgb(10 11 15 / 0.06) 1px, transparent 1px) 0 0 / 1.2em 1.2em,
+    linear-gradient(90deg, rgb(10 11 15 / 0.06) 1px, transparent 1px) 0 0 / 1.2em 1.2em,
+    #f6f7f8;
+}
+
+.mock .p-drawing svg {
+  width: 100%;
+  height: auto;
+  padding: 1em 0.8em 0.4em;
+}
+
+.p-block {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.55em 0.8em;
+  border-top: 1.5px solid var(--ink);
+  background: var(--paper);
+  font: 600 0.58em var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.p-ba {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 7em;
+  overflow: hidden;
+  border-radius: 0.8em;
+  font: 700 0.6em var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.p-before,
+.p-after {
+  display: flex;
+  align-items: flex-end;
+  padding: 0.9em;
+}
+
+.p-before {
+  background: repeating-linear-gradient(45deg, rgb(10 11 15 / 0.75) 0 1px, transparent 1px 6px), #d9dbde;
+}
+
+.p-after {
+  justify-content: flex-end;
+  background:
+    linear-gradient(rgb(10 11 15 / 0.08) 1px, transparent 1px) 0 0 / 1em 1em,
+    linear-gradient(90deg, rgb(10 11 15 / 0.08) 1px, transparent 1px) 0 0 / 1em 1em,
+    #f3f4f5;
+}
+
+/* The handle is a full-width layer, so translateX percentages move it across the whole card on the compositor. */
+.p-handle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.p-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: var(--ink);
+  translate: -50% 0;
+}
+
+.p-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.6em;
+  height: 2.6em;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--hivis);
+  translate: -50% -50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .p-handle {
+    animation: slide 5s var(--ease-in-out) infinite;
+  }
+}
+
+@keyframes slide {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-24%);
+  }
+  65% {
+    transform: translateX(24%);
+  }
+}
+
+.p-projects {
+  display: grid;
+}
+
+.p-projects span {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  padding: 0.8em 0;
+  border-top: 1px solid var(--ink-line);
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+.p-projects b {
+  font: 700 0.75em var(--mono);
+  opacity: 0.5;
+}
+
+.mock .p-projects svg {
+  margin-left: auto;
+  opacity: 0.4;
+}
+
+.p-steps {
+  display: grid;
+  gap: 0.4em;
+}
+
+.p-steps span {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.7em 0.9em;
+  border: 1.5px solid var(--ink);
+  border-radius: 0.6em;
+  box-shadow: 0.2em 0.2em 0 var(--ink);
+  font-weight: 700;
+}
+
+.p-steps b {
+  font: 700 0.7em var(--mono);
+  color: var(--ink);
+  padding: 0.2em 0.45em;
+  border-radius: 0.3em;
+  background: var(--hivis);
+}
+
+.m-wide {
+  flex: 1;
+}
+
+/* Concept 03 · Kyma Pool Care — lime banner, live water readings, plan picker */
+.mock--kyma {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.k-banner {
+  margin: -4.2em -1.3em 1.2em;
+  padding: 4.4em 1.3em 0.8em;
+  background: var(--hivis);
+  font-size: 1em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.k-lang {
+  padding: 0.35em 0.7em;
+  border-radius: 99em;
+  box-shadow: inset 0 0 0 1px rgb(10 11 15 / 0.25);
+  font: 600 0.7em var(--mono);
+}
+
+.mock--kyma .m-h1 {
+  font-stretch: 105%;
+}
+
+.k-pool {
+  position: relative;
+  margin: 0.4em 0 1.2em;
+  overflow: hidden;
+  border-radius: 1.1em;
+  background: var(--ink);
+  color: var(--hivis);
+}
+
+.mock .k-waves {
+  display: block;
+  width: 200%;
+  height: 6.4em;
+  padding-top: 0.6em;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2.4;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .k-waves {
+    animation: drift 6s linear infinite;
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.k-check {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4em;
+  padding: 0.75em 0.9em;
+  background: rgb(255 255 255 / 0.06);
+  color: var(--paper);
+  font: 600 0.6em var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.k-check b {
+  display: block;
+  color: var(--hivis);
+  font-size: 1.4em;
+}
+
+.k-seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.2em;
+  padding: 0.25em;
+  border-radius: 99em;
+  background: #eef0f2;
+  font-size: 0.82em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.k-seg span {
+  padding: 0.6em 0;
+  border-radius: 99em;
+}
+
+.k-seg .is-on {
+  background: var(--ink);
+  color: var(--hivis);
+}
+
+.k-plan {
+  display: grid;
+  gap: 0.25em;
+  margin-top: 0.8em;
+  padding: 1em;
+  border: 1.5px solid var(--ink);
+  border-radius: 1em;
+}
+
+.k-plan span {
+  font-size: 0.86em;
+  opacity: 0.7;
 }

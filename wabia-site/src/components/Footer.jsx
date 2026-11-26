@@ -1,20 +1,32 @@
-import { useLenis } from 'lenis/react';
-import { useRef } from 'react';
-import { progressAt } from '../scroll.js';
+import Magnet from '../bits/Magnet.jsx';
+import TextPressure from '../bits/TextPressure.jsx';
+import { finePointer, reduceMotion } from '../motion.js';
+import { Arrow } from './icons.jsx';
 
 export default function Footer() {
-  const footerRef = useRef(null);
-  const markRef = useRef(null);
-
-  // The wordmark rises into place as the page reaches its end.
-  useLenis(() => {
-    if (!footerRef.current || !markRef.current) return;
-    const p = progressAt(footerRef.current, 1);
-    markRef.current.style.transform = `translate3d(0, ${((1 - p) * 45).toFixed(2)}%, 0)`;
-  });
-
   return (
-    <footer ref={footerRef} className="footer">
+    <footer className="footer">
+      <div className="wrap footer__cta" data-reveal>
+        <p className="footer__big">Ready when you are.</p>
+        <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
+          <a className="btn btn--lime btn--lg" href="#quote">
+            Request a quote <Arrow className="btn__arrow" />
+          </a>
+        </Magnet>
+      </div>
+      {/* The wordmark bulges wider and heavier near the cursor (or a finger), and ripples on its own when idle. */}
+      <div className="footer__mark">
+        <TextPressure
+          text="WABIA"
+          fontFamily="'Anybody Variable', sans-serif"
+          fontUrl=""
+          italic={false}
+          idle="wave"
+          idleSpeed={0.6}
+          radius={0.45}
+          minFontSize={56}
+        />
+      </div>
       <div className="wrap footer__grid">
         <p className="footer__about">
           <strong>Wabia</strong> builds fixed-price websites for trades and home service businesses across Cyprus.
@@ -38,10 +50,7 @@ export default function Footer() {
             </li>
           </ul>
         </nav>
-        <p className="footer__legal">© {new Date().getFullYear()} Wabia. Concept designs shown are fictional.</p>
-      </div>
-      <div className="footer__mark" aria-hidden="true">
-        <span ref={markRef}>wabia</span>
+        <p className="footer__legal mono">© {new Date().getFullYear()} Wabia · Concept designs shown are fictional</p>
       </div>
     </footer>
   );
