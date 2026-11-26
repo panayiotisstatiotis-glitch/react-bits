@@ -16,7 +16,7 @@ import Footer from './components/Footer.jsx';
 
 const easeOutExpo = t => (t === 1 ? 1 : 1 - 2 ** (-10 * t));
 
-function Page() {
+function Page({ home }) {
   // Lenis smooths the scroll; ScrollTrigger reads the smoothed position on every Lenis frame.
   const lenis = useLenis(ScrollTrigger.update);
 
@@ -80,23 +80,30 @@ function Page() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <Header />
+      <Header home={home} />
       <Ruler />
       <main id="main" tabIndex={-1}>
-        <Hero />
-        <Tapes />
-        <Statement />
-        <Work />
-        <Process />
-        <Pricing />
-        <Quote />
+        {home ? (
+          <>
+            <Hero />
+            <Tapes />
+            <Statement />
+            <Work />
+            <Process />
+            <Pricing />
+          </>
+        ) : (
+          <Quote />
+        )}
       </main>
-      <Footer />
+      <Footer home={home} />
     </ClickSpark>
   );
 }
 
-export default function App() {
+// page: 'quote' for quote.html, anything else is the home page.
+export default function App({ page }) {
+  const home = page !== 'quote';
   const lenisRef = useRef(null);
 
   // GSAP's ticker drives Lenis, so smooth scrolling and every scroll animation share one frame clock.
@@ -109,10 +116,10 @@ export default function App() {
   }, []);
 
   return reduceMotion ? (
-    <Page />
+    <Page home={home} />
   ) : (
     <ReactLenis root ref={lenisRef} options={{ autoRaf: false, lerp: 0.09 }}>
-      <Page />
+      <Page home={home} />
     </ReactLenis>
   );
 }

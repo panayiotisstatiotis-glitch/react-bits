@@ -1,19 +1,23 @@
 import Magnet from '../bits/Magnet.jsx';
 import TextPressure from '../bits/TextPressure.jsx';
 import { finePointer, reduceMotion } from '../motion.js';
+import { QUOTE_PAGE } from './Header.jsx';
 import { Arrow } from './icons.jsx';
 
-export default function Footer() {
+export default function Footer({ home }) {
+  const to = id => (home ? `#${id}` : `./#${id}`);
   return (
     <footer className="footer">
-      <div className="wrap footer__cta" data-reveal>
-        <p className="footer__big">Ready when you are.</p>
-        <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
-          <a className="btn btn--lime btn--lg" href="#quote" data-cursor-label="Quote">
-            Request a quote <Arrow className="btn__arrow" />
-          </a>
-        </Magnet>
-      </div>
+      {home && (
+        <div className="wrap footer__cta" data-reveal>
+          <p className="footer__big">Ready when you are.</p>
+          <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
+            <a className="btn btn--lime btn--lg" href={QUOTE_PAGE} data-cursor-label="Quote">
+              Request a quote <Arrow className="btn__arrow" />
+            </a>
+          </Magnet>
+        </div>
+      )}
       {/* The wordmark bulges wider and heavier near the cursor (or a finger), and ripples on its own when idle. */}
       <div className="footer__mark">
         <TextPressure
@@ -34,19 +38,19 @@ export default function Footer() {
         <nav aria-label="Footer">
           <ul className="footer__links">
             <li>
-              <a href="#work">Work</a>
+              <a href={to('work')}>Work</a>
             </li>
             <li>
-              <a href="#process">Process</a>
+              <a href={to('process')}>Process</a>
             </li>
             <li>
-              <a href="#pricing">Pricing</a>
+              <a href={to('pricing')}>Pricing</a>
             </li>
             <li>
-              <a href="#quote">Request a quote</a>
+              <a href={QUOTE_PAGE}>Request a quote</a>
             </li>
             <li>
-              <a href="#top">Back to top</a>
+              <a href={home ? '#top' : '#quote'}>Back to top</a>
             </li>
           </ul>
         </nav>

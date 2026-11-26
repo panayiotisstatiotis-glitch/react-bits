@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Magnet from '../bits/Magnet.jsx';
+import { QUOTE_PAGE } from './Header.jsx';
 import { finePointer, gsap, reduceMotion, SplitText, useGSAP } from '../motion.js';
 import { Arrow, LogoMark, Phone, Chat, Doc } from './icons.jsx';
 
@@ -242,7 +243,7 @@ export default function Hero() {
               <div className="hero__lower">
                 <div className="hero__ctas">
                   <Magnet disabled={!finePointer || reduceMotion} padding={60} magnetStrength={3}>
-                    <a className="btn btn--lime btn--lg" href="#quote" data-cursor-label="Quote">
+                    <a className="btn btn--lime btn--lg" href={QUOTE_PAGE} data-cursor-label="Quote">
                       Request a quote <Arrow className="btn__arrow" />
                     </a>
                   </Magnet>

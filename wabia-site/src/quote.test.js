@@ -1,13 +1,14 @@
 /* eslint-env node */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { BUSINESS_TYPES, FIELDS, validateQuote } from './quote.js';
+import { BUSINESS_TYPES, MUST_HAVES, REQUIRED, validateQuote } from './quote.js';
 import { POST } from '../api/quote.js';
 
 const valid = {
   name: 'Andreas',
   email: 'andreas@example.com',
   businessType: BUSINESS_TYPES[0],
+  plan: 'business',
   details: 'Plumber in Limassol. I need a simple site with a call button.'
 };
 
@@ -35,11 +36,53 @@ test('accepts a complete request', () => {
   assert.deepEqual(validateQuote(valid), {});
 });
 
-test('flags every missing or malformed field', () => {
-  assert.deepEqual(Object.keys(validateQuote(null)).sort(), [...FIELDS].sort());
-  const bad = validateQuote({ name: '  ', email: 'andreas@', businessType: 'Spaceships', details: 'too short' });
-  assert.deepEqual(Object.keys(bad).sort(), [...FIELDS].sort());
+test('flags every missing or malformed required field', () => {
+  assert.deepEqual(Object.keys(validateQuote(null)).sort(), [...REQUIRED].sort());
+  const bad = validateQuote({
+    name: '  ',
+    email: 'andreas@',
+    businessType: 'Spaceships',
+    plan: 'gold',
+    details: 'too short'
+  });
+  assert.deepEqual(Object.keys(bad).sort(), [...REQUIRED].sort());
   assert.match(bad.email, /valid email/);
+});
+
+test('phone is needed only when they ask for a call or WhatsApp', () => {
+  assert.deepEqual(validateQuote({ ...valid, contact: 'Email' }), {});
+  assert.match(validateQuote({ ...valid, contact: 'WhatsApp' }).phone, /number/);
+  assert.match(validateQuote({ ...valid, contact: 'Phone call', phone: '12' }).phone, /number/);
+  assert.deepEqual(validateQuote({ ...valid, contact: 'WhatsApp', phone: '+357 99 123456' }), {});
+});
+
+test('optional fields can stay blank but are checked when filled', () => {
+  const full = {
+    ...valid,
+    businessName: 'Andreas Plumbing',
+    phone: '99 123456',
+    contact: 'Phone call',
+    area: 'Limassol and Paphos',
+    website: 'andreasplumbing.com.cy',
+    features: [MUST_HAVES[0], MUST_HAVES[1]],
+    timeline: 'Within a month'
+  };
+  assert.deepEqual(validateQuote(full), {});
+  const bad = validateQuote({
+    ...full,
+    website: 'not a site',
+    features: ['Rocket launcher'],
+    timeline: 'Yesterday',
+    contact: 'Fax'
+  });
+  assert.deepEqual(Object.keys(bad).sort(), ['contact', 'features', 'timeline', 'website']);
+});
+
+test('a filled spam trap is rejected and never sent', async () => {
+  assert.ok(validateQuote({ ...valid, fax: 'buy now' }).fax);
+  Object.assign(process.env, ENV);
+  globalThis.fetch = () => assert.fail('must not send');
+  assert.equal((await post({ ...valid, fax: 'buy now' })).status, 400);
 });
 
 test('server rejects bad input and never calls the email provider', async () => {
@@ -73,6 +116,8 @@ test('server reports ok only after the provider accepts the email', async () => 
   const sent = JSON.parse(calls[0].init.body);
   assert.equal(sent.reply_to, valid.email);
   assert.equal(sent.to, ENV.QUOTE_TO_EMAIL);
+  assert.match(sent.subject, /Business · €459/);
+  assert.match(sent.text, /Plan: Business · €459/);
 });
 
 test('provider failure or network error is reported as a failure', async () => {

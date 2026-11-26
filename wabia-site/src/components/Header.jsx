@@ -9,9 +9,11 @@ const LINKS = [
   ['process', 'Process'],
   ['pricing', 'Pricing']
 ];
-const SECTIONS = [['top', 'Intro'], ...LINKS, ['quote', 'Quote']];
+const SECTIONS = [['top', 'Intro'], ...LINKS];
+export const QUOTE_PAGE = 'quote.html';
 
-export default function Header() {
+// home: on the home page links scroll to sections; on the quote page they lead back to them.
+export default function Header({ home }) {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState('top');
   const toggleRef = useRef(null);
@@ -23,6 +25,7 @@ export default function Header() {
 
   // Scrollspy: the section crossing the middle of the screen is the current one.
   useGSAP(() => {
+    if (!home) return;
     SECTIONS.forEach(([id]) =>
       ScrollTrigger.create({
         trigger: `#${id}`,
@@ -55,16 +58,18 @@ export default function Header() {
   }, [open]);
 
   const index = SECTIONS.findIndex(([id]) => id === current);
+  const where = home ? [`0${index}`, SECTIONS[index][1]] : ['→', 'Request a quote'];
+  const to = id => (home ? `#${id}` : `./#${id}`);
 
   return (
     <header className="header">
       <div className="header__bar wrap">
-        <a className="logo" href="#top" aria-label="Wabia, back to top">
+        <a className="logo" href={home ? '#top' : './'} aria-label={home ? 'Wabia, back to top' : 'Wabia, home'}>
           <LogoMark className="logo__mark" />
           <span className="logo__word">wabia</span>
         </a>
         <p className="header__where" aria-hidden="true">
-          <span>0{index}</span> {SECTIONS[index][1]}
+          <span>{where[0]}</span> {where[1]}
         </p>
         <nav className="nav" aria-label="Main">
           <button
@@ -81,14 +86,19 @@ export default function Header() {
           <ul id="nav-links" className="nav__links" data-open={open || undefined} onClick={() => setOpen(false)}>
             {LINKS.map(([id, label]) => (
               <li key={id}>
-                <a href={`#${id}`} aria-current={current === id ? 'location' : undefined} data-cursor-label="Go">
+                <a href={to(id)} aria-current={home && current === id ? 'location' : undefined} data-cursor-label="Go">
                   {label}
                 </a>
               </li>
             ))}
           </ul>
           <Magnet disabled={!finePointer || reduceMotion} padding={40} magnetStrength={3}>
-            <a className="btn btn--lime nav__cta" href="#quote" data-cursor-label="Quote">
+            <a
+              className="btn btn--lime nav__cta"
+              href={QUOTE_PAGE}
+              aria-current={home ? undefined : 'page'}
+              data-cursor-label="Quote"
+            >
               Request a quote
             </a>
           </Magnet>

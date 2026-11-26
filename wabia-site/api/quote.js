@@ -1,5 +1,5 @@
 /* eslint-env node */
-import { validateQuote } from '../src/quote.js';
+import { planLabel, validateQuote } from '../src/quote.js';
 
 // POST /api/quote — a Vercel Function (Node.js runtime).
 // The email API key is read from server environment variables here and never reaches browser code.
@@ -23,6 +23,21 @@ export async function POST(request) {
 
   const name = data.name.trim();
   const email = data.email.trim();
+  const plan = planLabel(data.plan);
+  const line = (label, value) => `${label}: ${(Array.isArray(value) ? value.join(', ') : value?.trim?.()) || '—'}`;
+  const summary = [
+    line('Name', name),
+    line('Business', data.businessName),
+    line('Email', email),
+    line('Phone', data.phone),
+    line('Best way to reach', data.contact || 'Email'),
+    line('Type of business', data.businessType),
+    line('Area', data.area),
+    line('Current website', data.website),
+    line('Plan', plan),
+    line('Must-haves', data.features),
+    line('Wanted live', data.timeline)
+  ].join('\n');
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -30,8 +45,8 @@ export async function POST(request) {
       from: QUOTE_FROM_EMAIL,
       to: QUOTE_TO_EMAIL,
       reply_to: email,
-      subject: `Quote request: ${name} (${data.businessType})`.replace(/[\r\n]+/g, ' '),
-      text: `Name: ${name}\nEmail: ${email}\nBusiness: ${data.businessType}\n\n${data.details.trim()}`
+      subject: `Quote request: ${name} — ${plan} (${data.businessType})`.replace(/[\r\n]+/g, ' '),
+      text: `${summary}\n\n${data.details.trim()}`
     }),
     signal: AbortSignal.timeout(10000)
   }).catch(() => null);

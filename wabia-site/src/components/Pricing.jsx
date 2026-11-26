@@ -1,6 +1,7 @@
 import { useLenis } from 'lenis/react';
 import { useEffect, useRef } from 'react';
 import SpotlightCard from '../bits/SpotlightCard.jsx';
+import { QUOTE_PAGE } from './Header.jsx';
 import { finePointer, gsap, reduceMotion, riseTitle, useGSAP } from '../motion.js';
 import { Arrow, Check } from './icons.jsx';
 import Odometer from './Odometer.jsx';
@@ -302,7 +303,11 @@ export default function Pricing() {
                       ))}
                     </ul>
                     <p className="ticket__time mono">{time}</p>
-                    <a className="btn btn--ink btn--block" href="#quote" data-cursor-label="Pick">
+                    <a
+                      className="btn btn--ink btn--block"
+                      href={`${QUOTE_PAGE}?plan=${name.toLowerCase()}`}
+                      data-cursor-label="Pick"
+                    >
                       Request a quote <Arrow className="btn__arrow" />
                     </a>
                     <span className="ticket__barcode" aria-hidden="true" />

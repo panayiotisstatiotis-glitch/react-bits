@@ -1,8 +1,8 @@
 # Wabia site
 
-One-page site for Wabia, built with React, Vite, [Lenis](https://lenis.dev) smooth scrolling and GSAP
+Site for Wabia (a scrolling home page plus a quote page), built with React, Vite, [Lenis](https://lenis.dev) smooth scrolling and GSAP
 (ScrollTrigger, SplitText), driven from one frame clock. `src/bits/` holds React Bits components from this repo
-(Crosshair, Magnet, ClickSpark, TextPressure, SpotlightCard). With "reduce motion" switched on, Lenis and every
+(TargetCursor, Magnet, ClickSpark, TextPressure, SpotlightCard). With "reduce motion" switched on, Lenis and every
 scroll effect are off and the page is a plain document.
 
 ```bash
@@ -14,8 +14,11 @@ npm test         # form validation and /api/quote tests
 
 ## Quote form
 
-The form posts to `/api/quote` ([api/quote.js](api/quote.js)), a Vercel Function that checks the request again
-and emails it through [Resend](https://resend.com). The API key only ever lives in the server environment.
+The form lives on its own page, `quote.html` (every "Request a quote" button links there; a price ticket's
+button adds `?plan=starter|business|pro` to pre-select the plan). It asks for name, email, type of business, plan and
+project details, plus optional business name, phone or WhatsApp (required if they pick a call or WhatsApp), town,
+current website, must-haves and timeline. A hidden field catches bots. It posts to `/api/quote`
+([api/quote.js](api/quote.js)), a Vercel Function that checks the request again and emails it through [Resend](https://resend.com). The API key only ever lives in the server environment.
 The page shows "Request sent" only when that endpoint confirms the email went out.
 
 Before it can receive real requests:
