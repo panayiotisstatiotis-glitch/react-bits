@@ -11,6 +11,7 @@ const LINKS = [
 ];
 const SECTIONS = [['top', 'Intro'], ...LINKS];
 export const QUOTE_PAGE = 'quote.html';
+export const SAMPLE_PAGE = 'sample.html';
 
 // home: on the home page links scroll to sections; on the quote page they lead back to them.
 export default function Header({ home }) {

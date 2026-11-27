@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 import Magnet from '../bits/Magnet.jsx';
-import { QUOTE_PAGE } from './Header.jsx';
+import { QUOTE_PAGE, SAMPLE_PAGE } from './Header.jsx';
 import { finePointer, gsap, reduceMotion, SplitText, useGSAP } from '../motion.js';
 import { Arrow, LogoMark, Phone, Chat, Doc } from './icons.jsx';
 
-const TRADES = ['plumbers', 'electricians', 'air-con engineers', 'builders', 'pool care', 'cleaners'];
 // Each line of the headline has its own width on Anybody's 50–150 axis, then is sized to fill the column.
 const LINES = [
   { text: 'Websites', wdth: 150 },
@@ -21,8 +20,6 @@ export default function Hero() {
   const rootRef = useRef(null);
   const stageRef = useRef(null);
   const titleRef = useRef(null);
-  const rotRef = useRef(null);
-  const wordRef = useRef(null);
 
   // Layout (runs with reduced motion too): size the phone to the stage and fit each headline line to the column.
   useEffect(() => {
@@ -88,29 +85,6 @@ export default function Hero() {
           0.5
         );
 
-      // Rotating trade word in the lime box.
-      let i = 0;
-      const box = rotRef.current;
-      const word = wordRef.current;
-      const rotate = () => {
-        if (document.hidden) return;
-        i = (i + 1) % TRADES.length;
-        gsap
-          .timeline()
-          .to(word, { yPercent: -110, duration: 0.3, ease: 'power2.out' })
-          .add(() => {
-            const from = box.offsetWidth;
-            word.textContent = TRADES[i];
-            gsap.fromTo(
-              box,
-              { width: from },
-              { width: box.scrollWidth, duration: 0.5, ease: 'expo.out', clearProps: 'width' }
-            );
-          })
-          .fromTo(word, { yPercent: 110 }, { yPercent: 0, duration: 0.55, ease: 'expo.out' });
-      };
-      const timer = setInterval(rotate, 2300);
-
       // Scroll: the page zooms out, morphs into a phone screen on blueprint paper, then gets measured and rings.
       // Every layer's starting state lives in CSS (.motion …) and is only tweened *to* here, so a ScrollTrigger refresh
       // can never show a later layer early. --z drives the screen's clip-path from full stage to the phone's rectangle.
@@ -140,8 +114,6 @@ export default function Hero() {
             .to('.hero__ping', { opacity: 1, y: 0, scale: 1, duration: 0.09, stagger: 0.07, ease: 'back.out(2)' }, 0.7)
             .to({}, { duration: 0.12 });
         });
-
-      return () => clearInterval(timer);
     },
     { scope: rootRef }
   );
@@ -208,7 +180,7 @@ export default function Hero() {
               <div className="hero__text">
                 <div className="hero__meta mono">
                   <span>Wabia — web design for trades</span>
-                  <span>Cyprus · 35.1° N 33.4° E</span>
+                  <span className="hero__coords">Cyprus · 35.1° N 33.4° E</span>
                 </div>
                 <h1 id="hero-title" ref={titleRef} className="hero__title">
                   <span className="sr-only">{LINES.map(l => l.text).join(' ')}</span>
@@ -227,17 +199,8 @@ export default function Hero() {
                   ))}
                 </h1>
                 <p className="hero__sub">
-                  <span className="sr-only">
-                    Fixed-price websites for plumbers, electricians, air-con engineers, builders, pool care and cleaners
-                    across Cyprus.
-                  </span>
-                  <span aria-hidden="true">
-                    Fixed-price websites for{' '}
-                    <span ref={rotRef} className="rotator">
-                      <span ref={wordRef}>{TRADES[0]}</span>
-                    </span>{' '}
-                    across Cyprus.
-                  </span>
+                  Fixed-price websites for trades and home service businesses in Cyprus. Show what you do, where you
+                  work, and let customers request a quote online.
                 </p>
               </div>
               <div className="hero__lower">
@@ -247,8 +210,8 @@ export default function Hero() {
                       Request a quote <Arrow className="btn__arrow" />
                     </a>
                   </Magnet>
-                  <a className="btn btn--ghost btn--lg" href="#work">
-                    See concept designs
+                  <a className="btn btn--ghost btn--lg" href={SAMPLE_PAGE} data-cursor-label="Try">
+                    Try a sample website
                   </a>
                 </div>
                 <div className="hero__foot mono" aria-hidden="true">

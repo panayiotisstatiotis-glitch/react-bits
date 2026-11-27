@@ -680,22 +680,6 @@ textarea {
   font-size: clamp(18px, 1.6vw, 22px);
 }
 
-.rotator {
-  display: inline-block;
-  overflow: hidden;
-  padding: 0 0.35em;
-  border-radius: 4px;
-  background: var(--hivis);
-  color: var(--ink);
-  font-weight: 700;
-  vertical-align: bottom;
-  white-space: nowrap;
-}
-
-.rotator > span {
-  display: inline-block;
-}
-
 .hero__ctas {
   display: flex;
   flex-wrap: wrap;
@@ -717,7 +701,10 @@ textarea {
     padding-top: 20px;
   }
 
-  .hero__fig {
+  /* Decoration gives its space to the offer and the demo. */
+  .hero .hero__fig,
+  .hero .hero__coords,
+  .hero .hero__cue {
     display: none;
   }
 }
