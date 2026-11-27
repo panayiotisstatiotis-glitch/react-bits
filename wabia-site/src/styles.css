@@ -2794,7 +2794,7 @@ textarea {
   text-transform: uppercase;
 }
 
-/* Groups of the quote form: About you, Your business, The website. */
+/* The quote form's optional extras: one closed group under a dashed rule. */
 .form-group {
   display: flex;
   align-items: center;
@@ -2814,8 +2814,71 @@ textarea {
   background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px);
 }
 
-.form-group:first-child {
-  margin-top: 0;
+.more > summary {
+  min-height: 48px;
+  margin: 4px 0 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.more > summary::after,
+.more .field__opt,
+.more__sign {
+  order: 1;
+}
+
+.more .field__opt {
+  margin-left: 0;
+}
+
+/* A plus that turns into a minus when the group is open. */
+.more__sign {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  transition: background-color 160ms ease;
+}
+
+.more__sign::before,
+.more__sign::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 12px;
+  height: 2px;
+  margin: auto;
+  background: var(--ink);
+  transition: transform 200ms var(--ease-out);
+}
+
+.more__sign::after {
+  transform: rotate(90deg);
+}
+
+.more[open] .more__sign::after {
+  transform: rotate(0deg);
+}
+
+.more > summary:hover .more__sign {
+  background: var(--hivis);
+}
+
+.more > summary:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.more__body {
+  display: grid;
+  gap: 28px;
+  padding-top: 20px;
 }
 
 .field--choices {
