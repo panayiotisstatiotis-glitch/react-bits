@@ -638,6 +638,11 @@
   transition: transform 140ms var(--ease-out);
 }
 
+/* Outlined buttons have no fill of their own; don't let the browser's button grey show through. */
+.phone__bar button.m-line {
+  background: transparent;
+}
+
 .phone__bar button.m-btn:active,
 .demo button:active {
   transform: scale(0.96);
@@ -889,4 +894,85 @@
   .demo--calling .demo__avatar::after {
     animation: none;
   }
+}
+
+/* sample.html: the air-con concept as a full-size website in a phone-width column, with Wabia's banner on top. */
+.sample__banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px max(16px, env(safe-area-inset-left)) 12px max(16px, env(safe-area-inset-right));
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  background: var(--ink);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.sample__banner p {
+  flex: 1 1 260px;
+  margin: 0;
+}
+
+.sample__banner strong {
+  color: var(--hivis);
+}
+
+.sample__banner a {
+  color: var(--paper);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.phone.sample {
+  display: block;
+  aspect-ratio: auto;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+.sample__screen {
+  height: auto;
+  min-height: 100svh;
+  overflow: visible;
+  border-radius: 0;
+}
+
+.sample__screen::before {
+  display: none;
+}
+
+.sample__screen .phone__page,
+.sample__screen .phone__bar,
+.sample__screen .demo {
+  font-size: min(4.1cqw, 18px);
+}
+
+.sample__screen .phone__page {
+  will-change: auto;
+}
+
+.sample__screen .mock {
+  padding-top: 1.6em;
+  padding-bottom: 2em;
+}
+
+.sample__screen .phone__bar {
+  position: sticky;
+  padding-bottom: max(6cqw, env(safe-area-inset-bottom));
+}
+
+/* The journeys cover the screen, in the column. */
+.sample__screen .demo {
+  position: fixed;
+  right: max(0px, calc(50% - 240px));
+  left: max(0px, calc(50% - 240px));
+  z-index: 10;
+  padding: max(10cqw, env(safe-area-inset-top)) 7cqw max(10cqw, env(safe-area-inset-bottom));
 }
