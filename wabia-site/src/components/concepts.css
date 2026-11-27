@@ -661,9 +661,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
   gap: 0.9em;
-  padding: 18cqw 7cqw 9cqw;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18cqw 7cqw 12cqw;
   background: #0e1015;
   color: var(--paper);
   font-size: 4.1cqw;
@@ -752,38 +754,115 @@
   color: var(--ink);
 }
 
-.demo__slots {
-  display: grid;
-  gap: 0.5em;
+.demo__step {
+  margin: 0;
+  font: 600 0.62em var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* A question with pill answers: services and areas wrap, visit times stack full width. */
+.demo__choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4em;
   width: 100%;
-  margin: 0 0 0.6em;
+  margin: 0;
   padding: 0;
   border: 0;
 }
 
-.demo__slot input {
+.demo__choices legend {
+  width: 100%;
+  margin-bottom: 0.5em;
+  padding: 0;
+  font-weight: 700;
+}
+
+.demo__choices--wide .demo__chip {
+  flex: 1 1 100%;
+}
+
+.demo__chip input {
   position: absolute;
   opacity: 0;
 }
 
-.demo__slot span {
+.demo__chip span {
   display: block;
-  padding: 0.85em 1em;
-  border-radius: 0.9em;
+  padding: 0.6em 0.95em;
+  border-radius: 99em;
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3);
+  font-size: 0.9em;
   font-weight: 700;
   cursor: pointer;
 }
 
-.demo__slot input:checked + span {
+.demo__chip input:checked + span {
   background: var(--hivis);
   box-shadow: none;
   color: var(--ink);
 }
 
-.demo__slot input:focus-visible + span {
+.demo__chip input:focus-visible + span {
   outline: 2px solid var(--hivis);
   outline-offset: 3px;
+}
+
+.demo__form {
+  display: contents;
+}
+
+.demo__field {
+  display: grid;
+  gap: 0.3em;
+  width: 100%;
+  text-align: left;
+}
+
+.demo__field span {
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+.demo__field input {
+  width: 100%;
+  padding: 0.75em 1em;
+  border: 0;
+  border-radius: 0.8em;
+  background: rgb(255 255 255 / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3);
+  color: var(--paper);
+  font: inherit;
+}
+
+.demo__field input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--hivis);
+}
+
+.demo__field input[aria-invalid='true'] {
+  box-shadow: inset 0 0 0 2px #ff8a7a;
+}
+
+/* Phones zoom into inputs under 16px; keep them at 16px there. */
+@media (pointer: coarse) {
+  .demo__field input {
+    font-size: max(16px, 1em);
+  }
+}
+
+.demo__error {
+  margin: 0;
+  color: #ff8a7a;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+.demo:focus {
+  outline: none;
 }
 
 .demo__back {
@@ -797,9 +876,7 @@
 }
 
 .demo__note {
-  position: absolute;
-  bottom: 5cqw;
-  margin: 0;
+  margin: 0.4em 0 0;
   font: 600 0.62em var(--mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;

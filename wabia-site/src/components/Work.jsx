@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { gsap, reduceMotion, useGSAP } from '../motion.js';
+import { SAMPLE_PAGE } from './Header.jsx';
 import { DrosiaDemo, KymaBar, KymaPage, PetrinoBar, PetrinoPage, Phone } from './Concepts.jsx';
 
 const CONCEPTS = [
@@ -12,7 +13,7 @@ const CONCEPTS = [
     features: ['Call button on every screen', 'Next free slot', 'Areas covered'],
     tone: 'dark',
     Demo: DrosiaDemo,
-    tryIt: 'Try it: tap Call now or Book a visit on the phone, the way a customer would.'
+    tryIt: 'Try it: tap Get a quote on the phone, the way a customer would.'
   },
   {
     name: 'Petrino Builders',
@@ -131,7 +132,14 @@ export default function Work() {
                   </div>
                 </dl>
                 <p className="concept__note">{note}</p>
-                {tryIt && <p className="concept__try">{tryIt}</p>}
+                {tryIt && (
+                  <p className="concept__try">
+                    {tryIt}{' '}
+                    <a href={SAMPLE_PAGE} data-cursor-label="Open">
+                      Open the full sample site
+                    </a>
+                  </p>
+                )}
                 <p className="stamp">Concept · fictional business</p>
               </div>
               <div className="concept__device">

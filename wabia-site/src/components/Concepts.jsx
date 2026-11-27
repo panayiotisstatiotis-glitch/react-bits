@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Arrow, Building, Check, Gauge, HouseDrawing, Phone as PhoneIcon, Snow, Wave, Wrench } from './icons.jsx';
+import { AREAS, useDrosiaDemo } from './drosia-demo.jsx';
+import { Arrow, Building, Check, Gauge, HouseDrawing, Snow, Wave, Wrench } from './icons.jsx';
 import './concepts.css';
 
 // Mock sites for three fictional businesses. They're pictures of a website (aria-hidden by the phone frame);
@@ -77,7 +77,7 @@ export const DrosiaPage = () => (
     </div>
     <div className="m-label">Areas we cover</div>
     <div className="m-chips">
-      {['Larnaca', 'Livadia', 'Aradippou', 'Oroklini', 'Dromolaxia', 'Pyla'].map(a => (
+      {AREAS.map(a => (
         <span key={a}>{a}</span>
       ))}
     </div>
@@ -95,118 +95,11 @@ export const DrosiaPage = () => (
   </div>
 );
 
-const SLOTS = ['Today 15:30', 'Tomorrow 09:00', 'Tomorrow 13:00'];
-
-// The air-con concept, tappable: an owner can take the two steps a customer would, calling or booking a visit.
-// It all happens inside the phone and nothing is sent.
+// In Work: the air-con concept's phone, tappable.
 export function DrosiaDemo() {
-  const [step, setStep] = useState(null); // null | 'calling' | 'pick' | 'booked'
-  const [slot, setSlot] = useState(SLOTS[0]);
-  const screenRef = useRef(null);
-  const openerRef = useRef(null);
-
-  // Focus moves into each new screen, and back to the button that opened it when the demo closes.
-  useEffect(() => {
-    if (step) screenRef.current?.querySelector('input:checked, button')?.focus({ preventScroll: true });
-    else openerRef.current?.focus({ preventScroll: true });
-  }, [step]);
-
-  const open = (next, e) => {
-    openerRef.current = e.currentTarget;
-    setStep(next);
-  };
-  const close = () => setStep(null);
-  const title = { calling: 'Calling Drosia Air-Con', pick: 'Book a visit', booked: 'Visit booked' }[step];
-
-  const screen = step && (
-    <div
-      ref={screenRef}
-      className={`demo demo--${step}`}
-      role="dialog"
-      aria-label={`${title} (demo)`}
-      onKeyDown={e => e.key === 'Escape' && close()}
-    >
-      {step === 'calling' && (
-        <>
-          <span className="demo__avatar">
-            <Snow />
-          </span>
-          <p className="demo__title">Drosia Air-Con</p>
-          <p className="demo__sub">Calling…</p>
-          <button type="button" className="m-btn demo__end" onClick={close} data-cursor-label="End">
-            End call
-          </button>
-        </>
-      )}
-      {step === 'pick' && (
-        <>
-          <p className="demo__title">Book a visit</p>
-          <p className="demo__sub">Choose a time for a technician to come round.</p>
-          <fieldset className="demo__slots">
-            <legend className="sr-only">Visit time</legend>
-            {SLOTS.map(s => (
-              <label key={s} className="demo__slot">
-                <input type="radio" name="drosia-slot" checked={slot === s} onChange={() => setSlot(s)} />
-                <span>{s}</span>
-              </label>
-            ))}
-          </fieldset>
-          <button type="button" className="m-btn m-lime" onClick={() => setStep('booked')} data-cursor-label="Book">
-            Confirm visit
-          </button>
-          <button type="button" className="demo__back" onClick={close}>
-            Cancel
-          </button>
-        </>
-      )}
-      {step === 'booked' && (
-        <>
-          <span className="demo__avatar demo__avatar--done">
-            <Check />
-          </span>
-          <p className="demo__title">Visit booked</p>
-          <p className="demo__sub">
-            {slot}. We’ll message you on the day
-            <br />
-            when the technician is on the way.
-          </p>
-          <button type="button" className="m-btn m-lime" onClick={close}>
-            Done
-          </button>
-        </>
-      )}
-      <p className="demo__note">Demo · nothing is sent</p>
-    </div>
-  );
-
+  const { bar, screen } = useDrosiaDemo();
   return (
-    <Phone
-      tone="dark"
-      live
-      screen={screen}
-      bar={
-        <>
-          <button
-            type="button"
-            className="m-btn m-lime"
-            onClick={e => open('calling', e)}
-            aria-label="Call now (demo)"
-            data-cursor-label="Try"
-          >
-            <PhoneIcon /> Call now
-          </button>
-          <button
-            type="button"
-            className="m-btn m-line"
-            onClick={e => open('pick', e)}
-            aria-label="Book a visit (demo)"
-            data-cursor-label="Try"
-          >
-            Book a visit
-          </button>
-        </>
-      }
-    >
+    <Phone tone="dark" live screen={screen} bar={bar}>
       <DrosiaPage />
     </Phone>
   );
