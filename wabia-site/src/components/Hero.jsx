@@ -252,7 +252,7 @@ export default function Hero() {
                   </a>
                 </div>
                 <div className="hero__foot mono" aria-hidden="true">
-                  <span>Fig. 01 — Desktop, 1:1</span>
+                  <span className="hero__fig">Fig. 01 — Desktop, 1:1</span>
                   <span className="hero__cue">Scroll to zoom out</span>
                 </div>
               </div>

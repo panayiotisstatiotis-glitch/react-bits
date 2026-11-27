@@ -709,6 +709,19 @@ textarea {
   color: var(--muted);
 }
 
+/* Phones: start right under the header instead of floating in the middle of a tall screen, and drop the
+   desktop-only figure label. */
+@media (max-width: 759px) {
+  .hero__inner {
+    justify-content: flex-start;
+    padding-top: 20px;
+  }
+
+  .hero__fig {
+    display: none;
+  }
+}
+
 .hero__cue {
   display: inline-flex;
   align-items: center;
