@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { gsap, reduceMotion, useGSAP } from '../motion.js';
-import { DrosiaBar, DrosiaPage, KymaBar, KymaPage, PetrinoBar, PetrinoPage, Phone } from './Concepts.jsx';
+import { DrosiaDemo, KymaBar, KymaPage, PetrinoBar, PetrinoPage, Phone } from './Concepts.jsx';
 
 const CONCEPTS = [
   {
@@ -11,8 +11,8 @@ const CONCEPTS = [
     note: 'Dark, high-contrast design built around one big call button, with the next free slot on show.',
     features: ['Call button on every screen', 'Next free slot', 'Areas covered'],
     tone: 'dark',
-    Page: DrosiaPage,
-    Bar: DrosiaBar
+    Demo: DrosiaDemo,
+    tryIt: 'Try it: tap Call now or Book a visit on the phone, the way a customer would.'
   },
   {
     name: 'Petrino Builders',
@@ -111,7 +111,7 @@ export default function Work() {
               <i />
             </div>
           </header>
-          {CONCEPTS.map(({ name, trade, town, build, note, features, tone, Page, Bar }, i) => (
+          {CONCEPTS.map(({ name, trade, town, build, note, features, tone, Page, Bar, Demo, tryIt }, i) => (
             <div key={name} className="concept">
               <div className="concept__info">
                 <p className="concept__count mono">Concept 0{i + 1} / 03</p>
@@ -131,12 +131,17 @@ export default function Work() {
                   </div>
                 </dl>
                 <p className="concept__note">{note}</p>
+                {tryIt && <p className="concept__try">{tryIt}</p>}
                 <p className="stamp">Concept · fictional business</p>
               </div>
               <div className="concept__device">
-                <Phone tone={tone} bar={<Bar />}>
-                  <Page />
-                </Phone>
+                {Demo ? (
+                  <Demo />
+                ) : (
+                  <Phone tone={tone} bar={<Bar />}>
+                    <Page />
+                  </Phone>
+                )}
                 {features.map((f, k) => (
                   <span key={f} className={`callout callout--${k}`} aria-hidden="true">
                     {f}

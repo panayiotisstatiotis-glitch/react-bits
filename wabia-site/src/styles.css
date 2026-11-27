@@ -1440,6 +1440,16 @@ textarea {
   transform: rotate(-4deg);
 }
 
+/* Points owners at the one phone they can tap. */
+.concept__try {
+  max-width: 44ch;
+  margin: 16px 0 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--hivis);
+  color: var(--paper);
+  font-weight: 600;
+}
+
 .concept__device {
   position: relative;
   justify-self: center;

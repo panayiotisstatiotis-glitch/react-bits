@@ -629,3 +629,187 @@
   font-size: 0.86em;
   opacity: 0.7;
 }
+
+/* The tappable air-con demo (DrosiaDemo): real buttons in the bar and a screen that opens over the page. */
+.phone__bar button.m-btn,
+.demo button.m-btn {
+  border: 0;
+  cursor: pointer;
+  transition: transform 140ms var(--ease-out);
+}
+
+.phone__bar button.m-btn:active,
+.demo button:active {
+  transform: scale(0.96);
+}
+
+.phone__bar button.m-btn svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.phone__bar button:focus-visible,
+.demo :focus-visible {
+  outline: 2px solid var(--hivis);
+  outline-offset: 3px;
+}
+
+.demo {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9em;
+  padding: 18cqw 7cqw 9cqw;
+  background: #0e1015;
+  color: var(--paper);
+  font-size: 4.1cqw;
+  text-align: center;
+  animation: demo-in 260ms var(--ease-out) both;
+}
+
+@keyframes demo-in {
+  from {
+    opacity: 0;
+    transform: translateY(6%);
+  }
+}
+
+.demo .m-btn {
+  flex: none;
+  width: 100%;
+}
+
+.demo__avatar {
+  display: grid;
+  place-items: center;
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  background: rgb(184 242 61 / 0.12);
+  color: var(--hivis);
+}
+
+.demo__avatar svg {
+  width: 2.6em;
+  height: 2.6em;
+}
+
+/* While it rings, two soft rings pulse out from the avatar. */
+.demo--calling .demo__avatar {
+  position: relative;
+}
+
+.demo--calling .demo__avatar::before,
+.demo--calling .demo__avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--hivis);
+  border-radius: 50%;
+  animation: demo-ring 1.6s var(--ease-out) infinite;
+}
+
+.demo--calling .demo__avatar::after {
+  animation-delay: 0.8s;
+}
+
+@keyframes demo-ring {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+.demo__avatar--done {
+  background: var(--hivis);
+  color: var(--ink);
+}
+
+.demo__title {
+  margin: 0.4em 0 0;
+  font-size: 1.6em;
+  font-weight: 900;
+  font-stretch: 110%;
+  line-height: 1;
+}
+
+.demo__sub {
+  margin: 0 0 0.6em;
+  opacity: 0.72;
+}
+
+.demo--calling .demo__end {
+  margin-top: 3em;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.demo__slots {
+  display: grid;
+  gap: 0.5em;
+  width: 100%;
+  margin: 0 0 0.6em;
+  padding: 0;
+  border: 0;
+}
+
+.demo__slot input {
+  position: absolute;
+  opacity: 0;
+}
+
+.demo__slot span {
+  display: block;
+  padding: 0.85em 1em;
+  border-radius: 0.9em;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.demo__slot input:checked + span {
+  background: var(--hivis);
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.demo__slot input:focus-visible + span {
+  outline: 2px solid var(--hivis);
+  outline-offset: 3px;
+}
+
+.demo__back {
+  padding: 0.6em 1em;
+  border: 0;
+  background: none;
+  color: var(--paper);
+  font-weight: 600;
+  opacity: 0.72;
+  cursor: pointer;
+}
+
+.demo__note {
+  position: absolute;
+  bottom: 5cqw;
+  margin: 0;
+  font: 600 0.62em var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo,
+  .demo--calling .demo__avatar::before,
+  .demo--calling .demo__avatar::after {
+    animation: none;
+  }
+}
