@@ -1,10 +1,13 @@
 import { DrosiaPage } from './components/Concepts.jsx';
 import { useDrosiaDemo } from './components/drosia-demo.jsx';
 
+// Arriving from the small phone on the home page (sample.html?open=what) starts that journey straight away.
+const start = new URLSearchParams(location.search).get('open');
+
 // A sample website a tradesperson can open on their own phone: the air-con concept at full size, with the same
 // Call now / Get a quote journeys their customers would take. Fictional, and it says so before anything else.
 export default function SampleSite() {
-  const { bar, screen } = useDrosiaDemo();
+  const { bar, screen } = useDrosiaDemo({ start });
   return (
     <>
       <header className="sample__banner">

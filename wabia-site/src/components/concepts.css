@@ -631,29 +631,30 @@
 }
 
 /* The tappable air-con demo (DrosiaDemo): real buttons in the bar and a screen that opens over the page. */
-.phone__bar button.m-btn,
+.phone__bar :is(a, button).m-btn,
 .demo button.m-btn {
   border: 0;
   cursor: pointer;
+  text-decoration: none;
   transition: transform 140ms var(--ease-out);
 }
 
 /* Outlined buttons have no fill of their own; don't let the browser's button grey show through. */
-.phone__bar button.m-line {
+.phone__bar :is(a, button).m-line {
   background: transparent;
 }
 
-.phone__bar button.m-btn:active,
+.phone__bar :is(a, button).m-btn:active,
 .demo button:active {
   transform: scale(0.96);
 }
 
-.phone__bar button.m-btn svg {
+.phone__bar :is(a, button).m-btn svg {
   width: 1.1em;
   height: 1.1em;
 }
 
-.phone__bar button:focus-visible,
+.phone__bar :is(a, button):focus-visible,
 .demo :focus-visible {
   outline: 2px solid var(--hivis);
   outline-offset: 3px;

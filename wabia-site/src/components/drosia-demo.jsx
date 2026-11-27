@@ -24,8 +24,12 @@ const choices = ({ legend, options, value, onChange, name, wide }) => {
 // The air-con concept's customer journeys, tappable: call, or ask for a quote in two short steps. Used inside the
 // phone in Work and full size on sample.html. Everything happens on screen and nothing is sent.
 // Returns the bar's buttons and, while a journey is open, the screen that covers the page.
-export function useDrosiaDemo() {
-  const [step, setStep] = useState(null); // null | 'calling' | 'what' | 'who' | 'sent'
+// linkTo: instead of opening here, the buttons go to that page with the journey to start (?open=calling|what).
+// start: the journey to open straight away (from that ?open= parameter).
+export const JOURNEYS = ['calling', 'what'];
+
+export function useDrosiaDemo({ linkTo, start } = {}) {
+  const [step, setStep] = useState(JOURNEYS.includes(start) ? start : null); // null | 'calling' | 'what' | 'who' | 'sent'
   const [form, setForm] = useState(START);
   const [error, setError] = useState('');
   const screenRef = useRef(null);
@@ -177,26 +181,34 @@ export function useDrosiaDemo() {
     </div>
   );
 
+  // A button, or a link to the full-size page when this phone is too small to tap through.
+  const action = (journey, className, label, children) =>
+    linkTo ? (
+      <a className={className} href={`${linkTo}?open=${journey}`} aria-label={`${label} (opens the sample website)`}>
+        {children}
+      </a>
+    ) : (
+      <button
+        type="button"
+        className={className}
+        onClick={e => open(journey, e)}
+        aria-label={`${label} (demo)`}
+        data-cursor-label="Try"
+      >
+        {children}
+      </button>
+    );
   const bar = (
     <>
-      <button
-        type="button"
-        className="m-btn m-lime"
-        onClick={e => open('calling', e)}
-        aria-label="Call now (demo)"
-        data-cursor-label="Try"
-      >
-        <PhoneIcon /> Call now
-      </button>
-      <button
-        type="button"
-        className="m-btn m-line"
-        onClick={e => open('what', e)}
-        aria-label="Get a quote (demo)"
-        data-cursor-label="Try"
-      >
-        Get a quote
-      </button>
+      {action(
+        'calling',
+        'm-btn m-lime',
+        'Call now',
+        <>
+          <PhoneIcon /> Call now
+        </>
+      )}
+      {action('what', 'm-btn m-line', 'Get a quote', 'Get a quote')}
     </>
   );
 

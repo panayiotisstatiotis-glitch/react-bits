@@ -1,4 +1,6 @@
+import { useSyncExternalStore } from 'react';
 import { AREAS, useDrosiaDemo } from './drosia-demo.jsx';
+import { SAMPLE_PAGE } from './Header.jsx';
 import { Arrow, Building, Check, Gauge, HouseDrawing, Snow, Wave, Wrench } from './icons.jsx';
 import './concepts.css';
 
@@ -95,9 +97,19 @@ export const DrosiaPage = () => (
   </div>
 );
 
-// In Work: the air-con concept's phone, tappable.
+const NARROW = '(max-width: 759px)';
+const narrowNow = () => window.matchMedia(NARROW).matches;
+const onNarrow = change => {
+  const query = window.matchMedia(NARROW);
+  query.addEventListener('change', change);
+  return () => query.removeEventListener('change', change);
+};
+
+// In Work: the air-con concept's phone, tappable. On phones it's too small to tap through, so its buttons open the
+// full-size sample website instead, with the same journey started.
 export function DrosiaDemo() {
-  const { bar, screen } = useDrosiaDemo();
+  const narrow = useSyncExternalStore(onNarrow, narrowNow);
+  const { bar, screen } = useDrosiaDemo({ linkTo: narrow ? SAMPLE_PAGE : undefined });
   return (
     <Phone tone="dark" live screen={screen} bar={bar}>
       <DrosiaPage />
