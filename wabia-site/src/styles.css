@@ -701,6 +701,12 @@ textarea {
     padding-top: 20px;
   }
 
+  /* The offer under the headline: a little room above it and a brighter grey, so it reads easily. */
+  .hero__sub {
+    margin-top: 14px;
+    color: rgb(255 255 255 / 0.84);
+  }
+
   /* Decoration gives its space to the offer and the demo. */
   .hero .hero__fig,
   .hero .hero__coords,
