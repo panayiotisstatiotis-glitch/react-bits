@@ -22,15 +22,15 @@ export async function POST(request) {
   }
 
   const name = data.name.trim();
-  const email = data.email.trim();
-  const plan = planLabel(data.plan);
+  const email = data.email?.trim() ?? '';
+  const plan = data.plan ? planLabel(data.plan) : '';
   const line = (label, value) => `${label}: ${(Array.isArray(value) ? value.join(', ') : value?.trim?.()) || '—'}`;
   const summary = [
     line('Name', name),
     line('Business', data.businessName),
     line('Email', email),
     line('Phone', data.phone),
-    line('Best way to reach', data.contact || 'Email'),
+    line('Best way to reach', data.contact),
     line('Type of business', data.businessType),
     line('Area', data.area),
     line('Current website', data.website),
@@ -44,8 +44,11 @@ export async function POST(request) {
     body: JSON.stringify({
       from: QUOTE_FROM_EMAIL,
       to: QUOTE_TO_EMAIL,
-      reply_to: email,
-      subject: `Quote request: ${name} — ${plan} (${data.businessType})`.replace(/[\r\n]+/g, ' '),
+      ...(email && { reply_to: email }),
+      subject: `Quote request: ${name} — ${data.businessType}, ${data.area.trim()}${plan ? ` (${plan})` : ''}`.replace(
+        /[\r\n]+/g,
+        ' '
+      ),
       text: `${summary}\n\n${data.details.trim()}`
     }),
     signal: AbortSignal.timeout(10000)

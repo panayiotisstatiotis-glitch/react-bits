@@ -30,22 +30,24 @@ export const MUST_HAVES = [
 ];
 export const TIMELINES = ['As soon as possible', 'Within a month', 'No rush'];
 
-// Form order, so the first invalid field gets focus. REQUIRED are the ones an empty form gets told about.
+// Form order, so the first invalid field gets focus: the five required answers, then the optional extras.
+// REQUIRED are the ones an empty form gets told about; the email key carries the "email or phone" message.
 export const FIELDS = [
   'name',
-  'businessName',
   'email',
   'phone',
-  'contact',
   'businessType',
   'area',
+  'details',
+  'businessName',
+  'contact',
   'website',
   'plan',
   'features',
-  'timeline',
-  'details'
+  'timeline'
 ];
-export const REQUIRED = ['name', 'email', 'businessType', 'plan', 'details'];
+export const OPTIONAL = FIELDS.slice(6);
+export const REQUIRED = ['name', 'email', 'businessType', 'area', 'details'];
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE = /^\+?[\d\s().-]+$/;
@@ -63,13 +65,15 @@ export function validateQuote(data) {
 
   if (text(businessName).length > 120) errors.businessName = 'Please keep this under 120 characters.';
 
-  if (!text(email)) errors.email = 'Please enter your email address.';
-  else if (!EMAIL.test(text(email)) || text(email).length > 254)
-    errors.email = 'Please enter a valid email address, like name@example.com.';
-
-  // A phone number is only needed when they'd rather we call or message them.
+  // An email or a phone number is enough. Whichever is filled in must work, and the way they'd like to be reached
+  // needs its matching detail.
   const digits = text(phone).replace(/\D/g, '').length;
   const wantsPhone = contact === 'Phone call' || contact === 'WhatsApp';
+  if (text(email)) {
+    if (!EMAIL.test(text(email)) || text(email).length > 254)
+      errors.email = 'Please enter a valid email address, like name@example.com.';
+  } else if (contact === 'Email') errors.email = 'Please enter your email, or choose another way to reach you.';
+  else if (!text(phone)) errors.email = 'Please enter an email or a phone number.';
   if ((wantsPhone || text(phone)) && (!PHONE.test(text(phone)) || digits < 8 || digits > 15))
     errors.phone = 'Please enter a phone number we can reach you on, like 99 123456.';
 
@@ -77,12 +81,13 @@ export function validateQuote(data) {
 
   if (!BUSINESS_TYPES.includes(businessType)) errors.businessType = 'Please choose the closest type of business.';
 
-  if (text(area).length > 80) errors.area = 'Please keep this under 80 characters.';
+  if (!text(area)) errors.area = 'Please tell us your town or area.';
+  else if (text(area).length > 80) errors.area = 'Please keep this under 80 characters.';
 
   if (text(website) && (!WEBSITE.test(text(website)) || text(website).length > 200))
     errors.website = 'Please enter a web address, like yourbusiness.com, or leave it blank.';
 
-  if (!PLANS.some(([id]) => id === plan)) errors.plan = 'Please choose a plan, or “Not sure yet”.';
+  if (text(plan) && !PLANS.some(([id]) => id === plan)) errors.plan = 'Please choose one of our plans.';
 
   if (features !== undefined && (!Array.isArray(features) || !features.every(f => MUST_HAVES.includes(f))))
     errors.features = 'Please choose from the list.';

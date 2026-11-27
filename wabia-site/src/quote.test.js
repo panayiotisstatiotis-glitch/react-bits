@@ -8,7 +8,7 @@ const valid = {
   name: 'Andreas',
   email: 'andreas@example.com',
   businessType: BUSINESS_TYPES[0],
-  plan: 'business',
+  area: 'Limassol',
   details: 'Plumber in Limassol. I need a simple site with a call button.'
 };
 
@@ -42,11 +42,26 @@ test('flags every missing or malformed required field', () => {
     name: '  ',
     email: 'andreas@',
     businessType: 'Spaceships',
-    plan: 'gold',
+    area: '   ',
     details: 'too short'
   });
   assert.deepEqual(Object.keys(bad).sort(), [...REQUIRED].sort());
   assert.match(bad.email, /valid email/);
+  assert.match(bad.area, /town or area/);
+});
+
+test('an email or a phone number is enough to reach them', () => {
+  const phoneOnly = { ...valid, email: '', phone: '99 123456' };
+  assert.deepEqual(validateQuote(phoneOnly), {});
+  assert.match(validateQuote({ ...valid, email: '' }).email, /email or a phone number/);
+  // Choosing email as the way to reach them needs an email address.
+  assert.match(validateQuote({ ...phoneOnly, contact: 'Email' }).email, /email/);
+});
+
+test('the plan is optional but must be one of ours', () => {
+  assert.deepEqual(validateQuote({ ...valid, plan: '' }), {});
+  assert.deepEqual(validateQuote({ ...valid, plan: 'pro' }), {});
+  assert.ok(validateQuote({ ...valid, plan: 'gold' }).plan);
 });
 
 test('phone is needed only when they ask for a call or WhatsApp', () => {
@@ -64,6 +79,7 @@ test('optional fields can stay blank but are checked when filled', () => {
     contact: 'Phone call',
     area: 'Limassol and Paphos',
     website: 'andreasplumbing.com.cy',
+    plan: 'business',
     features: [MUST_HAVES[0], MUST_HAVES[1]],
     timeline: 'Within a month'
   };
@@ -108,7 +124,7 @@ test('server reports ok only after the provider accepts the email', async () => 
     calls.push({ url, init });
     return new Response('{"id":"1"}', { status: 200 });
   };
-  const res = await post(valid);
+  const res = await post({ ...valid, plan: 'business' });
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { ok: true });
   assert.equal(calls.length, 1);
@@ -118,6 +134,14 @@ test('server reports ok only after the provider accepts the email', async () => 
   assert.equal(sent.to, ENV.QUOTE_TO_EMAIL);
   assert.match(sent.subject, /Business · €459/);
   assert.match(sent.text, /Plan: Business · €459/);
+
+  // Phone only, no plan: nothing undefined in the email, and no empty reply-to.
+  await post({ ...valid, email: '', phone: '99 123456' });
+  const phoneOnly = JSON.parse(calls[1].init.body);
+  assert.equal('reply_to' in phoneOnly, false);
+  assert.doesNotMatch(phoneOnly.subject + phoneOnly.text, /undefined/);
+  assert.match(phoneOnly.subject, /Limassol/);
+  assert.match(phoneOnly.text, /Plan: —/);
 });
 
 test('provider failure or network error is reported as a failure', async () => {
