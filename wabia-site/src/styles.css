@@ -2256,7 +2256,7 @@ textarea {
 
 /* Pricing: job tickets */
 .pricing {
-  overflow-x: clip; /* the FIXED PRICE band runs off both edges; clip keeps the sticky stage working */
+  overflow-x: clip; /* the stamps start scaled up; clip keeps them from widening the page */
   padding-bottom: 0;
 }
 
@@ -2431,33 +2431,59 @@ textarea {
   font-size: 15px;
 }
 
-/* Pricing scene: a printer feeds the job tickets out; prices roll like a mechanical counter. */
-.pricing__stage {
-  position: relative;
+/* VAT, support and hosting, right above the prices. */
+.pricing__facts {
+  display: grid;
+  margin: 0 0 28px;
+  border-block: 1px solid var(--line);
 }
 
-.pricing__band {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: calc(-1 * var(--gutter));
-  margin: -0.5em 0 0;
-  color: transparent;
-  font: 900 clamp(110px, 15vw, 240px) / 1 var(--display);
-  font-stretch: 125%;
-  letter-spacing: -0.02em;
+.pricing__facts div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+}
+
+.pricing__facts div + div {
+  border-top: 1px solid var(--line);
+}
+
+.pricing__facts dt {
+  color: var(--muted);
+  font: 600 12px var(--mono);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.12);
 }
 
-.pricing__band span {
-  display: inline-block;
+.pricing__facts dd {
+  margin: 0;
+  font-weight: 700;
 }
 
-.printer,
+@media (min-width: 760px) {
+  .pricing__facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pricing__facts div {
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 24px;
+  }
+
+  .pricing__facts div:first-child {
+    padding-left: 0;
+  }
+
+  .pricing__facts div + div {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* Pricing motion: prices roll like a mechanical counter; the stamp, tape and sweep play once per card. */
 .ticket__sweep {
   display: none;
 }
@@ -2523,12 +2549,6 @@ textarea {
   opacity: 0;
 }
 
-@keyframes printer-led {
-  50% {
-    opacity: 0.25;
-  }
-}
-
 @keyframes barcode-scan {
   from {
     opacity: 1;
@@ -2541,65 +2561,7 @@ textarea {
   }
 }
 
-.motion .printer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  height: 50px;
-  margin-bottom: 12px;
-  padding: 0 18px;
-  border: 1px solid rgb(255 255 255 / 0.08);
-  border-radius: 14px 14px 8px 8px;
-  background: #15171e;
-  color: var(--muted);
-  font: 600 11px/1.3 var(--mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.printer__led {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--hivis);
-  box-shadow: 0 0 10px var(--hivis);
-  animation: printer-led 1.1s steps(1) infinite;
-}
-
-.printer__slot {
-  flex: 1;
-  height: 6px;
-  border-radius: 3px;
-  background: #000;
-  box-shadow:
-    inset 0 1px 2px rgb(0 0 0 / 0.9),
-    0 1px 0 rgb(255 255 255 / 0.07);
-}
-
-.printer__count {
-  white-space: nowrap;
-}
-
-.printer__n {
-  display: inline-block;
-  height: 1.3em;
-  overflow: hidden;
-  color: var(--hivis);
-  vertical-align: bottom;
-}
-
-.printer__reel,
-.printer__reel > span {
-  display: block;
-}
-
-/* Start states: tickets wait inside the printer, features unticked, stamps off, tape rolled up. */
-.motion .ticket {
-  clip-path: inset(30% 0 0 0);
-}
-
+/* Start states: features unticked, stamps off, tape rolled up. The cards themselves never move. */
 .motion .ticket__features li {
   opacity: 0.35;
 }
@@ -2633,68 +2595,6 @@ textarea {
 @media (hover: hover) and (pointer: fine) {
   .motion .ticket:hover .ticket__barcode::after {
     animation: barcode-scan 1.1s ease-in-out infinite alternate;
-  }
-}
-
-/* Wide and tall: the stage holds under the header while the tickets print, with compact tickets so it fits. */
-@media (min-width: 1000px) and (min-height: 760px) {
-  .motion .pricing__track {
-    height: 220svh;
-  }
-
-  .motion .pricing__stage {
-    position: sticky;
-    top: var(--header-h);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: calc(100svh - var(--header-h));
-  }
-
-  .motion .pricing__stage .ticket {
-    --tp: 20px;
-    padding-bottom: 16px;
-    clip-path: inset(100% 0 0 0);
-  }
-
-  .motion .pricing__stage .ticket__name {
-    margin: 8px 0 2px;
-    font-size: 24px;
-  }
-
-  .motion .pricing__stage .ticket__price {
-    margin: 4px 0;
-    font-size: clamp(60px, 5.4vw, 88px);
-  }
-
-  .motion .pricing__stage .ticket__pitch {
-    min-height: 2.8em;
-    margin: 8px 0 12px;
-    font-size: 15px;
-    line-height: 1.4;
-  }
-
-  .motion .pricing__stage .ticket__perf {
-    margin-bottom: 12px;
-  }
-
-  .motion .pricing__stage .ticket__features li {
-    padding: 5px 0;
-    font-size: 14px;
-  }
-
-  .motion .pricing__stage .ticket__time {
-    margin-bottom: 10px;
-    padding-top: 10px;
-  }
-
-  .motion .pricing__stage .ticket__barcode {
-    height: 22px;
-    margin-top: 10px;
-  }
-
-  .motion .pricing__stage .ticket__stamp {
-    top: 72px;
   }
 }
 
