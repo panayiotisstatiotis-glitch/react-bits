@@ -81,8 +81,61 @@ export default function Pricing() {
       if (reduceMotion) return;
       riseTitle('.pricing__title', 'top 82%', 0.016, contextSafe);
 
-      // The cards stay still so they can be compared at any point. Each one comes alive once as it scrolls into view:
-      // the price rolls like a mechanical counter, the stamp lands, and its features tick off as they come into view.
+      // Two outlined bands drift behind the cards in opposite directions, at the speed you scroll.
+      const across = { trigger: rootRef.current, start: 'top bottom', end: 'bottom top', scrub: true };
+      gsap.to('.pricing__band--a span', { xPercent: -50, ease: 'none', scrollTrigger: across });
+      gsap.fromTo('.pricing__band--b span', { xPercent: -50 }, { xPercent: 0, ease: 'none', scrollTrigger: across });
+
+      // VAT, support and hosting rise in one after another.
+      gsap.from('.pricing__facts > div', {
+        y: 40,
+        opacity: 0,
+        stagger: 0.2,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.pricing__facts', start: 'top 92%', end: 'top 62%', scrub: 0.5 }
+      });
+
+      // The cards deal in: each rises with a tilt and settles, one after another, and a sheen runs across them as they
+      // arrive (it has passed by the time they settle, so it never sits over the text). The deal finishes before the row is fully on screen, so from then on the cards hold still, side by
+      // side, for comparing. Opacity (not visibility) keeps their buttons reachable by keyboard throughout.
+      gsap
+        .matchMedia(rootRef.current)
+        .add({ wide: '(min-width: 1000px)', narrow: '(max-width: 999px)' }, ({ conditions }) => {
+          const tickets = gsap.utils.toArray('.ticket');
+          const dealt = { y: 160, rotation: i => [-6, 3, 6][i], scale: 0.9, opacity: 0 };
+          const settled = { y: 0, rotation: 0, scale: 1, opacity: 1, ease: 'power2.out' };
+          if (conditions.wide)
+            gsap.fromTo(tickets, dealt, {
+              ...settled,
+              stagger: 0.15,
+              scrollTrigger: { trigger: '.tickets', start: 'top 98%', end: 'top 45%', scrub: 0.6 }
+            });
+          // Stacked on narrower screens: each card deals in as it reaches the screen.
+          else
+            tickets.forEach((t, i) =>
+              gsap.fromTo(
+                t,
+                { ...dealt, rotation: dealt.rotation(i) },
+                {
+                  ...settled,
+                  scrollTrigger: { trigger: t, start: 'top 98%', end: 'top 70%', scrub: 0.6 }
+                }
+              )
+            );
+          gsap.fromTo(
+            '.ticket__sweep',
+            { xPercent: 0 },
+            {
+              xPercent: 200,
+              ease: 'none',
+              stagger: 0.1,
+              scrollTrigger: { trigger: '.tickets', start: 'top 85%', end: 'top 30%', scrub: true }
+            }
+          );
+        });
+
+      // Each card also comes alive once as it scrolls into view: the price rolls like a mechanical counter, the stamp
+      // lands, and its features tick off as they come into view.
       gsap.utils.toArray('.ticket').forEach(ticket => {
         const lime = ticket.classList.contains('ticket--lime');
         const once = el => ({ trigger: el, start: 'top 85%', once: true });
@@ -99,13 +152,7 @@ export default function Pricing() {
             { autoAlpha: lime ? 1 : 0.85, scale: 1, rotation: -12, duration: 0.3, ease: 'back.out(2)' },
             0.55
           );
-        if (lime)
-          tl.fromTo(ticket.querySelector('.ticket__tape'), { scaleX: 0 }, { scaleX: 1, duration: 0.5 }, 0.2).fromTo(
-            ticket.querySelector('.ticket__sweep'),
-            { xPercent: 0 },
-            { xPercent: 200, duration: 0.9 },
-            0.4
-          );
+        if (lime) tl.fromTo(ticket.querySelector('.ticket__tape'), { scaleX: 0 }, { scaleX: 1, duration: 0.5 }, 0.2);
         gsap
           .timeline({ scrollTrigger: once(ticket.querySelector('.ticket__features')) })
           .to(ticket.querySelectorAll('.ticket__features li'), { opacity: 1, duration: 0.3, stagger: 0.06 }, 0)
@@ -147,7 +194,7 @@ export default function Pricing() {
             Pick a starting point and we’ll confirm the exact price in writing before any work begins.
           </p>
         </div>
-        <dl className="pricing__facts" data-reveal>
+        <dl className="pricing__facts">
           {FACTS.map(([term, detail]) => (
             <div key={term}>
               <dt>{term}</dt>
@@ -155,67 +202,75 @@ export default function Pricing() {
             </div>
           ))}
         </dl>
-        <div className="tickets">
-          {PLANS.map(({ name, price, featured, pitch, includes, features, time }) => (
-            <div key={name} className="ticket-slot">
-              <SpotlightCard
-                theme="light"
-                className={featured ? 'ticket ticket--lime' : 'ticket'}
-                spotlightColor={featured ? '#0a0b0f' : '#b8f23d'}
-                intensity={0.22}
-                spotlightSize={320}
-                style={featured ? { '--spotlight-card-surface': '#b8f23d' } : undefined}
-                aria-labelledby={`plan-${name}`}
-              >
-                {featured && (
-                  <span className="ticket__tape" aria-hidden="true">
-                    Most picked · Most picked · Most picked
-                  </span>
-                )}
-                <div className="ticket__head mono">
-                  <span>Job ticket</span>
-                  <span>Nº {String(price).padStart(4, '0')}</span>
-                </div>
-                <h3 id={`plan-${name}`} className="ticket__name">
-                  {name}
-                </h3>
-                <p className="ticket__price">
-                  <span className="sr-only">€{price}</span>
-                  <span aria-hidden="true">
-                    <span className="ticket__cur">€</span>
-                    <Odometer value={price} />
-                  </span>
-                </p>
-                <p className="ticket__terms mono">
-                  {featured ? 'VAT included · our pick for most trades' : 'Fixed price · VAT included'}
-                </p>
-                <p className="ticket__pitch">{pitch}</p>
-                <hr className="ticket__perf" />
-                <p className="ticket__includes">{includes}:</p>
-                <ul className="ticket__features">
-                  {features.map(f => (
-                    <li key={f}>
-                      <Check />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <p className="ticket__time mono">{time}</p>
-                <a
-                  className="btn btn--ink btn--block"
-                  href={`${QUOTE_PAGE}?plan=${name.toLowerCase()}`}
-                  data-cursor-label="Pick"
+        <div className="pricing__deck">
+          <p className="pricing__band pricing__band--a" aria-hidden="true">
+            <span>Fixed price · No surprises · Fixed price · No surprises · </span>
+          </p>
+          <p className="pricing__band pricing__band--b" aria-hidden="true">
+            <span>VAT included · Support for life · VAT included · Support for life · </span>
+          </p>
+          <div className="tickets">
+            {PLANS.map(({ name, price, featured, pitch, includes, features, time }) => (
+              <div key={name} className="ticket-slot">
+                <SpotlightCard
+                  theme="light"
+                  className={featured ? 'ticket ticket--lime' : 'ticket'}
+                  spotlightColor={featured ? '#0a0b0f' : '#b8f23d'}
+                  intensity={0.22}
+                  spotlightSize={320}
+                  style={featured ? { '--spotlight-card-surface': '#b8f23d' } : undefined}
+                  aria-labelledby={`plan-${name}`}
                 >
-                  Request a quote <Arrow className="btn__arrow" />
-                </a>
-                <span className="ticket__barcode" aria-hidden="true" />
-                <span className="ticket__stamp" aria-hidden="true">
-                  Fixed price
-                </span>
-                {featured && <span className="ticket__sweep" aria-hidden="true" />}
-              </SpotlightCard>
-            </div>
-          ))}
+                  {featured && (
+                    <span className="ticket__tape" aria-hidden="true">
+                      Most picked · Most picked · Most picked
+                    </span>
+                  )}
+                  <div className="ticket__head mono">
+                    <span>Job ticket</span>
+                    <span>Nº {String(price).padStart(4, '0')}</span>
+                  </div>
+                  <h3 id={`plan-${name}`} className="ticket__name">
+                    {name}
+                  </h3>
+                  <p className="ticket__price">
+                    <span className="sr-only">€{price}</span>
+                    <span aria-hidden="true">
+                      <span className="ticket__cur">€</span>
+                      <Odometer value={price} />
+                    </span>
+                  </p>
+                  <p className="ticket__terms mono">
+                    {featured ? 'VAT included · our pick for most trades' : 'Fixed price · VAT included'}
+                  </p>
+                  <p className="ticket__pitch">{pitch}</p>
+                  <hr className="ticket__perf" />
+                  <p className="ticket__includes">{includes}:</p>
+                  <ul className="ticket__features">
+                    {features.map(f => (
+                      <li key={f}>
+                        <Check />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="ticket__time mono">{time}</p>
+                  <a
+                    className="btn btn--ink btn--block"
+                    href={`${QUOTE_PAGE}?plan=${name.toLowerCase()}`}
+                    data-cursor-label="Pick"
+                  >
+                    Request a quote <Arrow className="btn__arrow" />
+                  </a>
+                  <span className="ticket__barcode" aria-hidden="true" />
+                  <span className="ticket__stamp" aria-hidden="true">
+                    Fixed price
+                  </span>
+                  <span className="ticket__sweep" aria-hidden="true" />
+                </SpotlightCard>
+              </div>
+            ))}
+          </div>
         </div>
         <p className="pricing__note" data-reveal>
           Prices cover designing and building your site, VAT included. Hosting and your domain name are separate running

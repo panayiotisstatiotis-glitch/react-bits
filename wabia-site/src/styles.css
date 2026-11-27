@@ -2269,7 +2269,7 @@ textarea {
 
 /* Pricing: job tickets */
 .pricing {
-  overflow-x: clip; /* the stamps start scaled up; clip keeps them from widening the page */
+  overflow-x: clip; /* the bands run off both edges and the stamps start scaled up; clip keeps the page width */
   padding-bottom: 0;
 }
 
@@ -2496,7 +2496,40 @@ textarea {
   }
 }
 
-/* Pricing motion: prices roll like a mechanical counter; the stamp, tape and sweep play once per card. */
+/* Pricing motion: the cards deal in, outlined bands drift behind them, a sheen runs across them with the scroll, and
+   prices roll like a mechanical counter. */
+.pricing__deck {
+  position: relative;
+}
+
+.pricing__band {
+  position: absolute;
+  z-index: 0;
+  left: calc(-1 * var(--gutter));
+  margin: 0;
+  color: transparent;
+  font: 900 clamp(110px, 15vw, 240px) / 1 var(--display);
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.12);
+}
+
+.pricing__band--a {
+  top: 12%;
+}
+
+.pricing__band--b {
+  bottom: 12%;
+}
+
+.pricing__band span {
+  display: inline-block;
+}
+
 .ticket__sweep {
   display: none;
 }
@@ -2601,7 +2634,7 @@ textarea {
   left: -100%;
   display: block;
   width: 100%;
-  background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.6) 50%, transparent 62%);
+  background: linear-gradient(105deg, transparent 40%, rgb(255 255 255 / 0.45) 50%, transparent 60%);
   pointer-events: none;
 }
 
