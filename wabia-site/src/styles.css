@@ -2530,6 +2530,119 @@ textarea {
   display: inline-block;
 }
 
+/* Plan by plan (hold screens only): the counter and the huge outlined name behind the card on show. */
+.pricing__solo,
+.pricing__count {
+  display: none;
+}
+
+@media (min-width: 1000px) and (min-height: 760px) {
+  .motion .pricing__track {
+    height: 520svh;
+  }
+
+  .motion .pricing__stage {
+    position: sticky;
+    top: var(--header-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100svh - var(--header-h));
+  }
+
+  .motion .pricing__solo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .motion .pricing__solo span {
+    grid-area: 1 / 1;
+    color: transparent;
+    font: 900 clamp(120px, 17vw, 280px) / 1 var(--display);
+    font-stretch: 125%;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    -webkit-text-stroke: 2px rgb(184 242 61 / 0.35);
+  }
+
+  /* Above the row, so it never sits on a card. */
+  .motion .pricing__count {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    z-index: 2;
+    display: block;
+    height: 1.4em;
+    margin: 0 0 24px;
+    overflow: hidden;
+    color: var(--hivis);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .pricing__reel,
+  .pricing__reel > span {
+    display: block;
+  }
+
+  /* Start state: every card waits off stage until the scene brings it on. Compact cards so one fits the stage. */
+  .motion .pricing__stage .ticket {
+    --tp: 20px;
+    padding-bottom: 16px;
+    opacity: 0;
+  }
+
+  .motion .pricing__stage .ticket__name {
+    margin: 8px 0 2px;
+    font-size: 24px;
+  }
+
+  .motion .pricing__stage .ticket__price {
+    margin: 4px 0;
+    font-size: clamp(60px, 5.4vw, 88px);
+  }
+
+  .motion .pricing__stage .ticket__pitch {
+    min-height: 2.8em;
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .motion .pricing__stage .ticket__perf {
+    margin-bottom: 12px;
+  }
+
+  .motion .pricing__stage .ticket__features li {
+    padding: 5px 0;
+    font-size: 14px;
+  }
+
+  .motion .pricing__stage .ticket__time {
+    margin-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  .motion .pricing__stage .ticket__barcode {
+    height: 22px;
+    margin-top: 10px;
+  }
+
+  .motion .pricing__stage .ticket__stamp {
+    top: 72px;
+  }
+}
+
 .ticket__sweep {
   display: none;
 }
